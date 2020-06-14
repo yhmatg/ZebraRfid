@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId 'com.zebra.rfidreaderAPI.demo'
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 30
         versionName "1.0.0.1"
@@ -38,4 +38,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'android.arch.persistence.room:runtime:1.0.0'
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    implementation 'net.sourceforge.jexcelapi:jxl:2.6.12'
+    implementation 'com.github.zhangke3016:MultilevelTreeList:1.0.2'
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
 }

@@ -19,6 +19,7 @@
         <item>Readers List</item>
         <item>About</item>
         <item>Profiles</item>
+        <item>demo</item>
     </string-array>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
