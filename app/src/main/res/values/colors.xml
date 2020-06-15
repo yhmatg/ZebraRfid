@@ -8,4 +8,6 @@
     <color name="colorPrimary">#78909c</color>
     <color name="colorPrimaryDark">#4b636e</color>
     <color name="colorAccent">#ff7043</color>
+    <color name="red">#80ff0000</color>
+    <color name="blue">#800000ff</color>
 </resources>

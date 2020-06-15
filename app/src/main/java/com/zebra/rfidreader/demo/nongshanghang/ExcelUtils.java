@@ -213,7 +213,7 @@ public class ExcelUtils {
         }
 
         //这些是你要导出的字段
-        String[] title = {"业务开始日期", "业务结束日期", "EPC编码", "封袋编号", "登记机构号", "档案所属机构名称", "档案种类", "档案名称", "档案本数", "档案箱编号"};
+        String[] title = {"批次号","业务开始日期", "业务结束日期", "EPC编码", "封袋编号", "登记机构号", "档案所属机构名称", "档案种类", "档案名称", "档案本数", "档案箱编号","盘点状态"};
         File file;
         File dir = new File(Environment.getExternalStorageDirectory() + "/新文件夹/");
         file = new File(dir, fileName);
@@ -251,6 +251,7 @@ public class ExcelUtils {
             Label nameLable = new Label(8, i + 1, order.getFileName());
             Label numberLable = new Label(9, i + 1, order.getFileNumber());
             Label boxLable = new Label(10, i + 1, order.getBoxCode());
+            Label statusLable = new Label(11, i + 1, order.getInvStatus().toString());
             sheet.addCell(batchLabel);
             sheet.addCell(startLabel);
             sheet.addCell(endLable);
@@ -262,6 +263,7 @@ public class ExcelUtils {
             sheet.addCell(nameLable);
             sheet.addCell(numberLable);
             sheet.addCell(boxLable);
+            sheet.addCell(statusLable);
         }
         // 写入数据
         wwb.write();

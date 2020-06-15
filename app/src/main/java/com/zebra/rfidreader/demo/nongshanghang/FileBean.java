@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 
 import org.w3c.dom.TypeInfo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 //资产详情
@@ -40,7 +42,9 @@ public class FileBean {
     private String boxCode;
     //盘点状态 0未盘点 1已经盘点
     @Ignore
-    private int invStatus;
+    private Boolean invStatus;
+    @Ignore
+    private List<EpcBean> epcs = new ArrayList<>();
 
     public FileBean() {
     }
@@ -140,12 +144,20 @@ public class FileBean {
         this.boxCode = boxCode;
     }
 
-    public int getInvStatus() {
+    public Boolean getInvStatus() {
         return invStatus;
     }
 
-    public void setInvStatus(int invStatus) {
+    public void setInvStatus(Boolean invStatus) {
         this.invStatus = invStatus;
+    }
+
+    public List<EpcBean> getEpcs() {
+        return epcs;
+    }
+
+    public void setEpcs(List<EpcBean> epcs) {
+        this.epcs = epcs;
     }
 
     @Override

@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,18 +34,22 @@ import com.multilevel.treelist.TreeRecyclerAdapter;
 import com.zebra.rfidreader.demo.R;
 import com.zebra.rfidreader.demo.application.Application;
 import com.zebra.rfidreader.demo.common.ResponseHandlerInterfaces;
+import com.zebra.rfidreader.demo.common.hextoascii;
 import com.zebra.rfidreader.demo.home.MainActivity;
 import com.zebra.rfidreader.demo.inventory.InventoryFragment;
 import com.zebra.rfidreader.demo.inventory.InventoryListItem;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ShanghangFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler {
+public class ShanghangFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FileBeanAdapter.OnItemClickListener {
     private Button btRead;
     private Button btWrite;
     private Button chooseBox;
@@ -56,9 +61,20 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
     private RecyclerView fileRecycle;
     protected List<Node> multiDatas = new ArrayList<>();
     private TreeRecyclerAdapter multiAdapter;
+    //没有按照封袋划分的文件集合
     private List<FileBean> excelfileBeans = new ArrayList<>();
+    //按照封袋划分的文件集合
+    private List<FileBean> bagFileBeans = new ArrayList<>();
     private FileBeanAdapter fileBeanAdapter;
     private HashSet<String> selectBoxs = new HashSet<>();
+    //封袋号和对应的档案
+    HashMap<String, ArrayList<FileBean>> bagMap = new HashMap<>();
+    //epc和对应的档案
+    HashMap<String, FileBean> epcFileMap = new HashMap<>();
+    private MaterialDialog updateDialog;
+    private TextView tvBagCode;
+    private TextView tvEpc;
+    private View contentView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,8 +86,7 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
         excelfileBeans.clear();
         excelfileBeans.addAll(allFileBeans);
         divideByBoxcode(excelfileBeans);
-        currentFileList.clear();
-        currentFileList.addAll(excelfileBeans);
+        divideByBag(excelfileBeans);
         fileBeanAdapter.notifyDataSetChanged();
     }
 
@@ -105,8 +120,18 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
         btWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<FileBean> writeBeans = new ArrayList<>();
+                for (FileBean fileBean : currentFileList) {
+                    for (EpcBean epc : fileBean.getEpcs()) {
+                        FileBean toFileBean = new FileBean();
+                        copyFileBean(fileBean,toFileBean);
+                        toFileBean.setEpcCode(epc.getEpc());
+                        toFileBean.setInvStatus(epc.isInved());
+                        writeBeans.add(toFileBean);
+                    }
+                }
                 try {
-                    ExcelUtils.writeExcel(getContext(),excelfileBeans,"excelTest03.xls");
+                    ExcelUtils.writeExcel(getContext(), writeBeans, "excelTest03.xls");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -119,15 +144,21 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
                 showMultipleDialog();
             }
         });
-        fileBeanAdapter = new FileBeanAdapter(currentFileList,getActivity());
-        fileRecycle = (RecyclerView)getActivity().findViewById(R.id.file_recycle);
+        fileBeanAdapter = new FileBeanAdapter(currentFileList, getActivity());
+        fileBeanAdapter.setOnItemClickListener(this);
+        fileRecycle = (RecyclerView) getActivity().findViewById(R.id.file_recycle);
         fileRecycle.setLayoutManager(new LinearLayoutManager(getActivity()));
+        fileRecycle.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         fileRecycle.setAdapter(fileBeanAdapter);
         initMultiDialogView();
         initData();
+        //初始化epcdialog布局
+        contentView = LayoutInflater.from(getActivity()).inflate(R.layout.file_epc_dialog, null);
+        tvBagCode = (TextView) contentView.findViewById(R.id.tv_bagCode);
+        tvEpc = (TextView) contentView.findViewById(R.id.tv_epc);
     }
 
-    public void showMultipleDialog(){
+    public void showMultipleDialog() {
         if (multipleDialog != null) {
             multipleDialog.show();
         } else {
@@ -150,14 +181,14 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
         }
     }
 
-    public void initMultiDialogView(){
+    public void initMultiDialogView() {
         multiContentView = LayoutInflater.from(getActivity()).inflate(R.layout.multiple_choice_dialog, null);
         TextView tvSubmit = (TextView) multiContentView.findViewById(R.id.tv_finish);
         TextView tvCancel = (TextView) multiContentView.findViewById(R.id.tv_cancle);
         multiRecycle = (RecyclerView) multiContentView.findViewById(R.id.multi_recycle);
         multiRecycle.setLayoutManager(new LinearLayoutManager(getActivity()));
         multiAdapter = new SimpleTreeRecyclerAdapter(multiRecycle, getActivity(),
-                multiDatas, 2,R.drawable.tree_ex,R.drawable.tree_ec);
+                multiDatas, 2, R.drawable.tree_ex, R.drawable.tree_ec);
         multiRecycle.setAdapter(multiAdapter);
         tvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,15 +196,14 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
                 List<Node> allNodes = multiAdapter.getAllNodes();
                 selectBoxs.clear();
                 for (Node node : allNodes) {
-                    if(node.isChecked()){
+                    if (node.isChecked()) {
                         selectBoxs.add(node.getName());
                     }
                 }
                 List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(selectBoxs);
-                currentFileList.clear();
-                currentFileList.addAll(fileBeansByBoxCode);
+                divideByBag(fileBeansByBoxCode);
                 fileBeanAdapter.notifyDataSetChanged();
-                if(multipleDialog != null){
+                if (multipleDialog != null) {
                     multipleDialog.dismiss();
                 }
             }
@@ -181,7 +211,7 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(multipleDialog != null){
+                if (multipleDialog != null) {
                     multipleDialog.dismiss();
                 }
             }
@@ -192,7 +222,65 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
 
     @Override
     public void handleTagResponse(InventoryListItem inventoryListItem, boolean isAddedToList) {
+        //hex
+        String hexEpc = inventoryListItem.getTagID();
+        //ascii
+        String epc = hex2ascii(hexEpc);
+        String[] split = epc.split("\\|");
+        String epcHead = split[0];
+        Log.e("epc=====",epcHead);
+        FileBean fileBean = epcFileMap.get(epcHead);
+        if (fileBean != null) {
+            for (EpcBean fileBeanEpc : fileBean.getEpcs()) {
+                if (epc.equals(fileBeanEpc.getEpc())) {
+                    fileBeanEpc.setInved(true);
+                }
+            }
+            fileBeanAdapter.notifyDataSetChanged();
+        }
+    }
 
+    private static String hex2ascii(String tagID) {
+        if (tagID != null && !tagID.equals("")) {
+            String hex = tagID;
+            int n = hex.length();
+            if(((n%2) > 0))
+            {
+                return tagID;
+            }
+            StringBuilder sb = new StringBuilder(n / 2);
+            try {
+                sb = new StringBuilder((n / 2) + 2);
+                //prefexing the ascii representation with a single quote
+                for (int i = 0; i < n; i += 2) {
+                    char a = hex.charAt(i);
+                    char b = hex.charAt(i + 1);
+                    char c = (char) ((hexToInt(a) << 4) | hexToInt(b));
+                    if (hexToInt(a) <= 7 && hexToInt(b) <= 0xf && c >= 0x20 && c <= 0x7f)
+                        sb.append(c);
+                    else
+                        return tagID;
+                }
+            } catch (IllegalArgumentException iae) {
+                return tagID;
+            }
+            //prefexing the ascii representation with a single quote
+            return sb.toString();
+        } else
+            return tagID;
+    }
+
+    private static int hexToInt(char ch) {
+        if ('a' <= ch && ch <= 'f') {
+            return ch - 'a' + 10;
+        }
+        if ('A' <= ch && ch <= 'F') {
+            return ch - 'A' + 10;
+        }
+        if ('0' <= ch && ch <= '9') {
+            return ch - '0';
+        }
+        throw new IllegalArgumentException(String.valueOf(ch));
     }
 
     @Override
@@ -239,8 +327,8 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
 
     /**
      * 导入选中文件
-     * */
-    public void importExcle(Intent data){
+     */
+    public void importExcle(Intent data) {
         Uri uri = data.getData();
         if (uri != null) {
             String path = getPath(getContext(), uri);
@@ -252,7 +340,7 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
                     //文件名
                     String upLoadFileName = file.getName();
                     String[] strArray = upLoadFileName.split("\\.");
-                    int suffixIndex = strArray.length -1;
+                    int suffixIndex = strArray.length - 1;
                     File dir = new File(upLoadFilePath);
                     //调用查询方法
                     //ExcelUtil.QueryUser(this, dir);
@@ -262,7 +350,7 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
                     divideByBoxcode(excelfileBeans);
                     DemoDatabase.getInstance().getFileBeanDao().deleteAllData();
                     DemoDatabase.getInstance().getFileBeanDao().insertItems(excelfileBeans);
-                    Toast.makeText(getActivity(), excelfileBeans.toString(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), excelfileBeans.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -271,12 +359,12 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
     private void divideByBoxcode(List<FileBean> fileBeans) {
         multiAdapter.removeData(multiDatas);
         multiDatas.clear();
-        multiDatas.add(new Node("100","-1","全部"));
+        multiDatas.add(new Node("100", "-1", "全部"));
         ArrayList<String> boxCodes = new ArrayList<>();
         for (FileBean fileBean : fileBeans) {
-            if(!boxCodes.contains(fileBean.getBoxCode())){
+            if (!boxCodes.contains(fileBean.getBoxCode())) {
                 boxCodes.add(fileBean.getBoxCode());
-                multiDatas.add(new Node(fileBean.getBoxCode(),"100",fileBean.getBoxCode()));
+                multiDatas.add(new Node(fileBean.getBoxCode(), "100", fileBean.getBoxCode()));
             }
         }
         multiAdapter.addData(multiDatas);
@@ -293,8 +381,7 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
                 if ("primary".equalsIgnoreCase(type)) {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
-            }
-            else if (isDownloadsDocument(uri)) {
+            } else if (isDownloadsDocument(uri)) {
                 final String id = DocumentsContract.getDocumentId(uri);
                 final Uri contentUri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
@@ -374,6 +461,77 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
+    public void divideByBag(List<FileBean> fileBeans) {
+        bagMap.clear();
+        epcFileMap.clear();
+        currentFileList.clear();
+        //按照封袋编号划分档案
+        for (FileBean fileBean : fileBeans) {
+            if (!bagMap.containsKey(fileBean.getBagCode())) {
+                ArrayList<FileBean> oneBeans = new ArrayList<>();
+                oneBeans.add(fileBean);
+                bagMap.put(fileBean.getBagCode(), oneBeans);
+            } else {
+                ArrayList<FileBean> twoBeans = bagMap.get(fileBean.getBagCode());
+                twoBeans.add(fileBean);
+            }
+        }
+        Set<Map.Entry<String, ArrayList<FileBean>>> entries = bagMap.entrySet();
+        for (Map.Entry<String, ArrayList<FileBean>> entry : entries) {
+            FileBean toBean = new FileBean();
+            FileBean fromBean = entry.getValue().get(0);
+            copyFileBean(fromBean, toBean);
+            for (FileBean fileBean : entry.getValue()) {
+                toBean.getEpcs().add(new EpcBean(fileBean.getEpcCode()));
+            }
+            currentFileList.add(toBean);
+            epcFileMap.put(toBean.getEpcCode(), toBean);
+        }
 
 
+    }
+
+    public void copyFileBean(FileBean fromBean, FileBean toBean) {
+        toBean.setBatchCode(fromBean.getBatchCode());
+        toBean.setStartDate(fromBean.getStartDate());
+        toBean.setEndDate(fromBean.getEndDate());
+        toBean.setEpcCode(fromBean.getEpcCode().split("\\|")[0]);
+        toBean.setBagCode(fromBean.getBagCode());
+        toBean.setRegisterCode(fromBean.getRegisterCode());
+        toBean.setOrgName(fromBean.getOrgName());
+        toBean.setFileType(fromBean.getFileType());
+        toBean.setFileName(fromBean.getFileName());
+        toBean.setFileNumber(fromBean.getFileNumber());
+        toBean.setBoxCode(fromBean.getBoxCode());
+    }
+
+    @Override
+    public void onItemClick(FileBean fileBean) {
+        tvBagCode.setText("封袋编号： " + fileBean.getBagCode());
+        String epc = "";
+        String isInved = "";
+        for (EpcBean fileBeanEpc : fileBean.getEpcs()) {
+            if (fileBeanEpc.isInved()) {
+                isInved = "已盘";
+            } else {
+                isInved = "未盘";
+            }
+            epc = epc + "EPC     " + fileBeanEpc.getEpc() + "     " + isInved+ "\n";
+        }
+        tvEpc.setText(epc);
+        showEpcDialog();
+    }
+
+    public void showEpcDialog() {
+        if (updateDialog != null) {
+            updateDialog.show();
+        } else {
+            updateDialog = new MaterialDialog.Builder(getActivity())
+                    .customView(contentView, false)
+                    .show();
+            Window window = updateDialog.getWindow();
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+    }
 }
