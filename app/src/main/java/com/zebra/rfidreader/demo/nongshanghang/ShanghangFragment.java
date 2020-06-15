@@ -228,7 +228,8 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
         String epc = hex2ascii(hexEpc);
         String[] split = epc.split("\\|");
         String epcHead = split[0];
-        Log.e("epc=====",epcHead);
+        Log.e("epc1=====",hexEpc);
+        Log.e("epc2=====",epcHead);
         FileBean fileBean = epcFileMap.get(epcHead);
         if (fileBean != null) {
             for (EpcBean fileBeanEpc : fileBean.getEpcs()) {
@@ -256,6 +257,9 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
                     char a = hex.charAt(i);
                     char b = hex.charAt(i + 1);
                     char c = (char) ((hexToInt(a) << 4) | hexToInt(b));
+                    if(a == '0' && b == '0'){
+                        continue;
+                    }
                     if (hexToInt(a) <= 7 && hexToInt(b) <= 0xf && c >= 0x20 && c <= 0x7f)
                         sb.append(c);
                     else
