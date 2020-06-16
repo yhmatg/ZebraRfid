@@ -42,7 +42,7 @@ public class FileBean {
     private String boxCode;
     //盘点状态 0未盘点 1已经盘点
     @Ignore
-    private Boolean invStatus;
+    private Boolean invStatus = false;
     @Ignore
     private List<EpcBean> epcs = new ArrayList<>();
 

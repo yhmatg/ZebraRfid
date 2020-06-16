@@ -75,6 +75,8 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
     private TextView tvBagCode;
     private TextView tvEpc;
     private View contentView;
+    private TextView selectFileNum;
+    private TextView invNum;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,6 +109,8 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
         btWrite = (Button) getActivity().findViewById(R.id.bt_write);
         chooseBox = (Button) getActivity().findViewById(R.id.bt_choose_box);
         inventoryButton = (FloatingActionButton) getActivity().findViewById(R.id.inventoryButton);
+        selectFileNum = (TextView) getActivity().findViewById(R.id.file_num);
+        invNum = (TextView) getActivity().findViewById(R.id.inv_num);
         btRead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +128,7 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
                 for (FileBean fileBean : currentFileList) {
                     for (EpcBean epc : fileBean.getEpcs()) {
                         FileBean toFileBean = new FileBean();
-                        copyFileBean(fileBean,toFileBean);
+                        copyFileBean(fileBean, toFileBean);
                         toFileBean.setEpcCode(epc.getEpc());
                         toFileBean.setInvStatus(epc.isInved());
                         writeBeans.add(toFileBean);
@@ -228,16 +232,28 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
         String epc = hex2ascii(hexEpc);
         String[] split = epc.split("\\|");
         String epcHead = split[0];
-        Log.e("epc1=====",hexEpc);
-        Log.e("epc2=====",epcHead);
+        Log.e("epc1=====", hexEpc);
+        Log.e("epc2=====", epcHead);
         FileBean fileBean = epcFileMap.get(epcHead);
+        boolean isInved = true;
         if (fileBean != null) {
             for (EpcBean fileBeanEpc : fileBean.getEpcs()) {
                 if (epc.equals(fileBeanEpc.getEpc())) {
                     fileBeanEpc.setInved(true);
                 }
+                if (!fileBeanEpc.isInved()) {
+                    isInved = false;
+                }
             }
+            fileBean.setInvStatus(isInved);
             fileBeanAdapter.notifyDataSetChanged();
+            int invedNum = 0;
+            for (FileBean bean : currentFileList) {
+                if(bean.getInvStatus()){
+                    invedNum++;
+                }
+            }
+            invNum.setText(String.valueOf(invedNum));
         }
     }
 
@@ -245,8 +261,7 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
         if (tagID != null && !tagID.equals("")) {
             String hex = tagID;
             int n = hex.length();
-            if(((n%2) > 0))
-            {
+            if (((n % 2) > 0)) {
                 return tagID;
             }
             StringBuilder sb = new StringBuilder(n / 2);
@@ -257,7 +272,7 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
                     char a = hex.charAt(i);
                     char b = hex.charAt(i + 1);
                     char c = (char) ((hexToInt(a) << 4) | hexToInt(b));
-                    if(a == '0' && b == '0'){
+                    if (a == '0' && b == '0') {
                         continue;
                     }
                     if (hexToInt(a) <= 7 && hexToInt(b) <= 0xf && c >= 0x20 && c <= 0x7f)
@@ -352,6 +367,8 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
                     excelfileBeans.clear();
                     excelfileBeans.addAll(fileBeans);
                     divideByBoxcode(excelfileBeans);
+                    divideByBag(excelfileBeans);
+                    fileBeanAdapter.notifyDataSetChanged();
                     DemoDatabase.getInstance().getFileBeanDao().deleteAllData();
                     DemoDatabase.getInstance().getFileBeanDao().insertItems(excelfileBeans);
                     Toast.makeText(getActivity(), excelfileBeans.toString(), Toast.LENGTH_SHORT).show();
@@ -491,8 +508,8 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
             currentFileList.add(toBean);
             epcFileMap.put(toBean.getEpcCode(), toBean);
         }
-
-
+        selectFileNum.setText(String.valueOf(currentFileList.size()));
+        invNum.setText("0");
     }
 
     public void copyFileBean(FileBean fromBean, FileBean toBean) {
@@ -520,7 +537,7 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
             } else {
                 isInved = "未盘";
             }
-            epc = epc + "EPC     " + fileBeanEpc.getEpc() + "     " + isInved+ "\n";
+            epc = epc + "EPC     " + fileBeanEpc.getEpc() + "     " + isInved + "\n";
         }
         tvEpc.setText(epc);
         showEpcDialog();

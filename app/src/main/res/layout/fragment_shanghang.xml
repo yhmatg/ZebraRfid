@@ -4,19 +4,19 @@
     style="@style/base_layout_style"
     android:orientation="vertical"
     tools:context="com.zebra.rfidreader.demo.settings.LedFragment">
+
     <LinearLayout
-        android:id="@+id/tag_layout"
+        android:id="@+id/num_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/bt_choose_box">
         <TextView
-            android:id="@+id/bag_code"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="封袋编号"
+            android:text="总封袋数："
             android:textSize="16sp" />
 
         <TextView
@@ -25,11 +25,50 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:text="0"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="已盘点数："
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/inv_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tag_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/num_layout">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="封袋编号"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="档案本数"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/box_coe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,7 +77,6 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/inv_status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
