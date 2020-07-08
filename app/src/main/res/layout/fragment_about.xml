@@ -56,6 +56,7 @@
     <include layout="@layout/title_divider" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/sledTitle"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
@@ -65,6 +66,7 @@
         android:text="@string/rfid_sled" />
 
     <TableRow
+        android:visibility="gone"
         android:id="@+id/moduleVersionRow"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -95,6 +97,7 @@
     </TableRow>
 
     <TableRow
+        android:visibility="gone"
         android:id="@+id/radioVersionRow"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -125,9 +128,11 @@
             style="@style/style_normal_font" />
     </TableRow>
 
-    <include layout="@layout/title_divider" />
+    <include layout="@layout/title_divider"
+        android:visibility="gone"/>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/copyRight"
         android:layout_height="0dp"
         android:layout_weight="30"

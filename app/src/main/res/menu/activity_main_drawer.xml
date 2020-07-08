@@ -7,11 +7,13 @@
         <item
             android:id="@+id/nav_rapidread"
             android:icon="@drawable/ic_nav_rr"
-            android:title="Rapid Read" />
+            android:title="Rapid Read"
+            android:visible="false"/>
         <item
             android:id="@+id/nav_inventory"
             android:icon="@drawable/ic_nav_inv"
-            android:title="Inventory" />
+            android:title="Inventory"
+            android:visible="false"/>
         <item
             android:id="@+id/nav_locatetag"
             android:icon="@drawable/ic_nav_loc"
@@ -19,11 +21,13 @@
         <item
             android:id="@+id/nav_access_control"
             android:icon="@drawable/ic_nav_access"
-            android:title="Access Control" />
+            android:title="Access Control"
+            android:visible="false"/>
         <item
             android:id="@+id/nav_profiles"
             android:icon="@drawable/ic_list_profiles"
-            android:title="Profiles" />
+            android:title="Profiles"
+            android:visible="false"/>
 
         <item
             android:id="@+id/nav_settings"
@@ -33,7 +37,8 @@
         <item
             android:id="@+id/nav_prefilters"
             android:icon="@drawable/ic_nav_filter"
-            android:title="Pre Filters" />
+            android:title="Pre Filters"
+            android:visible="false"/>
 
         <item
             android:id="@+id/nav_about"

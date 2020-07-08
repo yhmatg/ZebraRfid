@@ -49,7 +49,7 @@ import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ShanghangFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FileBeanAdapter.OnItemClickListener {
+public class ShanghangFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FileBeanAdapter.OnItemClickListener, EpcBeanAdapter.OnItemClickListener {
     private Button btRead;
     private Button btWrite;
     private Button chooseBox;
@@ -74,6 +74,9 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
     private MaterialDialog updateDialog;
     private TextView tvBagCode;
     private TextView tvEpc;
+    private RecyclerView EpcRecycle;
+    private EpcBeanAdapter epcBeanAdapter;
+    private List<EpcBean> epcBeans = new ArrayList<>();
     private View contentView;
     private TextView selectFileNum;
     private TextView invNum;
@@ -159,7 +162,13 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
         //初始化epcdialog布局
         contentView = LayoutInflater.from(getActivity()).inflate(R.layout.file_epc_dialog, null);
         tvBagCode = (TextView) contentView.findViewById(R.id.tv_bagCode);
-        tvEpc = (TextView) contentView.findViewById(R.id.tv_epc);
+        //tvEpc = (TextView) contentView.findViewById(R.id.tv_epc);
+        epcBeanAdapter = new EpcBeanAdapter(epcBeans,getActivity());
+        epcBeanAdapter.setOnItemClickListener(this);
+        EpcRecycle = (RecyclerView) contentView.findViewById(R.id.epc_recycle);
+        EpcRecycle.setLayoutManager(new LinearLayoutManager(getActivity()));
+        EpcRecycle.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        EpcRecycle.setAdapter(epcBeanAdapter);
     }
 
     public void showMultipleDialog() {
@@ -300,6 +309,15 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
             return ch - '0';
         }
         throw new IllegalArgumentException(String.valueOf(ch));
+    }
+
+    public static String asciiToHex(String asciiStr) {
+        char[] chars = asciiStr.toCharArray();
+        StringBuilder hex = new StringBuilder();
+        for (char ch : chars) {
+            hex.append(Integer.toHexString((int) ch));
+        }
+        return hex.toString();
     }
 
     @Override
@@ -539,7 +557,10 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
             }
             epc = epc + "EPC     " + fileBeanEpc.getEpc() + "     " + isInved + "\n";
         }
-        tvEpc.setText(epc);
+        //tvEpc.setText(epc);
+        epcBeans.clear();
+        epcBeans.addAll(fileBean.getEpcs());
+        epcBeanAdapter.notifyDataSetChanged();
         showEpcDialog();
     }
 
@@ -553,6 +574,11 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
             Window window = updateDialog.getWindow();
             window.setBackgroundDrawableResource(android.R.color.transparent);
         }
+    }
 
+    @Override
+    public void onEpcItemClick(EpcBean fileBean) {
+        Application.locateTag = asciiToHex(fileBean.getEpc());
+        updateDialog.dismiss();
     }
 }
