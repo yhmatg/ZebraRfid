@@ -37,7 +37,7 @@
             android:gravity="left"
             android:layout_weight="45"
             style="@style/style_normal_font"
-            android:text="@string/app_version_title" />
+            android:text="@string/application_version" />
 
         <TextView
             style="@style/style_normal_font"

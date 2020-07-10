@@ -20,6 +20,7 @@
         <item>关于</item>
         <item>Profiles</item>
         <item>盘点</item>
+        <item>贴标验证</item>
     </string-array>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -525,6 +526,8 @@
     <string name="file_loc_str">定位</string>
     <string name="setting_str">设置</string>
     <string name="inv_app">盘点应用</string>
+    <string name="hn_verify_str">贴标验证</string>
+    <string name="application_version">版本号</string>
 
     <string-array name="inv_menu_items_for_matching_tags">
         <item>All</item>

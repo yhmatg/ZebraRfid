@@ -16,7 +16,7 @@
             android:visible="false"/>
         <item
             android:id="@+id/nav_locatetag"
-            android:icon="@drawable/ic_nav_loc"
+            android:icon="@drawable/hn_loction_icon"
             android:title="定位" />
         <item
             android:id="@+id/nav_access_control"
@@ -31,7 +31,7 @@
 
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_nav_sett"
+            android:icon="@drawable/hn_setting_icon"
             android:title="设置" />
 
         <item
@@ -45,8 +45,13 @@
             android:title="关于" />
         <item
             android:id="@+id/shanghang_inv"
-            android:icon="@drawable/ic_nav_access"
+            android:icon="@drawable/hn_inv_icon"
             android:title="盘点" />
+
+        <item
+            android:id="@+id/shanghang_vertify"
+            android:icon="@drawable/hn_vertify_icon"
+            android:title="贴标认证" />
     </group>
 
 </menu>

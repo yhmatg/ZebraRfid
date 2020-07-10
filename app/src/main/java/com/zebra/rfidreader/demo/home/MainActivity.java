@@ -98,6 +98,7 @@ import com.zebra.rfidreader.demo.inventory.InventoryListItem;
 import com.zebra.rfidreader.demo.locate_tag.LocationingFragment;
 import com.zebra.rfidreader.demo.locate_tag.RangeGraph;
 import com.zebra.rfidreader.demo.nongshanghang.SHInvFragment;
+import com.zebra.rfidreader.demo.nongshanghang.SHVertifyFragment;
 import com.zebra.rfidreader.demo.notifications.NotificationsService;
 import com.zebra.rfidreader.demo.rapidread.RapidReadFragment;
 import com.zebra.rfidreader.demo.reader_connection.ReadersListFragment;
@@ -880,6 +881,9 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
                 break;
             case 10:
                 fragment = SHInvFragment.newInstance();
+                break;
+            case 11:
+                fragment = SHVertifyFragment.newInstance();
                 break;
         }
 
@@ -2148,6 +2152,12 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
         selectNavigationMenuItem(8);
         selectItem(10);
     }
+
+    public void vertifyClicked(View view) {
+        selectNavigationMenuItem(9);
+        selectItem(11);
+    }
+
 
     /**
      * About option in {@link com.zebra.rfidreader.demo.home.AboutFragment} is selected

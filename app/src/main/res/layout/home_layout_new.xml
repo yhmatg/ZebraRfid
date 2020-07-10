@@ -72,6 +72,7 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
+            android:layout_marginTop="60dp"
             android:layout_height="wrap_content">
 
             <Button
@@ -81,9 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/btn_access1"
+                android:drawableTop="@drawable/hn_inv_icon"
                 android:drawablePadding="5dp"
                 android:gravity="center_horizontal|top"
                 android:onClick="demoClicked"
@@ -94,14 +94,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/btn_filter1"
+                android:drawableTop="@drawable/hn_vertify_icon"
                 android:drawablePadding="5dp"
                 android:gravity="center_horizontal|top"
-                android:text="@string/home_filter" />
+                android:onClick="vertifyClicked"
+                android:text="@string/hn_verify_str" />
         </LinearLayout>
 
         <LinearLayout
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/btn_locate1"
+                android:drawableTop="@drawable/hn_loction_icon"
                 android:drawablePadding="5dp"
                 android:gravity="center_horizontal|top"
                 android:onClick="locateClicked"
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/btn_sett1"
+                android:drawableTop="@drawable/hn_setting_icon"
                 android:drawablePadding="5dp"
                 android:gravity="center_horizontal|top"
                 android:onClick="settClicked"
