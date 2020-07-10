@@ -819,6 +819,9 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
             case R.id.nav_about:
                 selectItem(8);
                 break;
+            case R.id.shanghang_inv:
+                selectItem(10);
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -2142,6 +2145,7 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
     }
 
     public void demoClicked(View view) {
+        selectNavigationMenuItem(8);
         selectItem(10);
     }
 

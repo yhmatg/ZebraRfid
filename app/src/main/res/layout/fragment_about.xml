@@ -6,13 +6,15 @@
 
     <TextView
         android:id="@+id/appTitle"
-        android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         style="@style/style_medium_font"
         android:text="@string/RFID_demo_app" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/companyTitle"
         android:layout_height="0dp"
         android:layout_weight="7"
@@ -20,13 +22,13 @@
         style="@style/style_medium_font"
         android:text="@string/moto_solutions" />
 
-    <include layout="@layout/title_divider" />
+    <include layout="@layout/title_divider"
+        android:visibility="gone"/>
 
     <TableRow
         android:id="@+id/appVersionRow"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="15"
+        android:layout_height="wrap_content"
         android:gravity="left|center_vertical">
 
         <TextView
@@ -53,7 +55,8 @@
             android:text="@string/app_version" />
     </TableRow>
 
-    <include layout="@layout/title_divider" />
+    <include layout="@layout/title_divider"
+        android:visibility="gone"/>
 
     <TextView
         android:visibility="gone"
