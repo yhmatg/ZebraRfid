@@ -22,3 +22,7 @@
 
 # RFID API3 SDK package maintained
 -keep public class com.zebra.rfid.** { *; }
+
+-dontwarn org.apache.log4j.**
+
+-keep class org.apache.log4j.** { *; }
