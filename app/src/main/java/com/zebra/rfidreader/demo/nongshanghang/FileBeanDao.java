@@ -19,4 +19,6 @@ public interface FileBeanDao extends BaseDao<FileBean> {
     @Query("SELECT * FROM FileBean ")
     public List<FileBean> getAllFileBeans();
 
+    @Query("SELECT * FROM FileBean where boxCode = :mBoxCode")
+    public List<FileBean> getFileBeanByBoxCode(String mBoxCode);
 }

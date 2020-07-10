@@ -89,7 +89,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         excelfileBeans.clear();
         excelfileBeans.addAll(allFileBeans);
         divideByBoxcode(excelfileBeans);
-        divideByBag(excelfileBeans);
+        //divideByBag(excelfileBeans);
         fileBeanAdapter.notifyDataSetChanged();
     }
 
@@ -529,15 +529,26 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     }
 
     public void copyFileBean(FileBean fromBean, FileBean toBean) {
+        toBean.setEpcCode(fromBean.getEpcCode().split("\\|")[0]);
         toBean.setBatchCode(fromBean.getBatchCode());
         toBean.setStartDate(fromBean.getStartDate());
         toBean.setEndDate(fromBean.getEndDate());
-        toBean.setEpcCode(fromBean.getEpcCode().split("\\|")[0]);
+        toBean.setBagSealDate(fromBean.getBagSealDate());
+        toBean.setBoxSealDate(fromBean.getBoxSealDate());
+        toBean.setInHouseDate(fromBean.getInHouseDate());
+        toBean.setOutHouseDate(fromBean.getOutHouseDate());
+        toBean.setDestoryDate(fromBean.getDestoryDate());
         toBean.setBagCode(fromBean.getBagCode());
+        toBean.setBarNumber(fromBean.getBarNumber());
         toBean.setRegisterCode(fromBean.getRegisterCode());
         toBean.setOrgName(fromBean.getOrgName());
         toBean.setFileType(fromBean.getFileType());
         toBean.setFileName(fromBean.getFileName());
+        toBean.setFileNumber(fromBean.getFileNumber());
+        toBean.setAreaCode(fromBean.getAreaCode());
+        toBean.setShelfCode(fromBean.getShelfCode());
+        toBean.setShelfFloorCode(fromBean.getShelfFloorCode());
+        toBean.setShelfColumCode(fromBean.getShelfColumCode());
         toBean.setFileNumber(fromBean.getFileNumber());
         toBean.setBoxCode(fromBean.getBoxCode());
     }

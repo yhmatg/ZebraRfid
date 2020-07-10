@@ -24,7 +24,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,12 +48,18 @@ import java.util.Map;
 import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
-public class SHVertifyFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FileBeanAdapter.OnItemClickListener, EpcBeanAdapter.OnItemClickListener {
+public class SHVertifyFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FileBeanVertifyAdapter.OnItemClickListener, EpcBeanAdapter.OnItemClickListener {
     private Button btRead;
     private Button btWrite;
     private Button chooseBox;
+    //当前按封袋编号处理过的集合
     ArrayList<FileBean> currentFileList = new ArrayList<>();
+    //当前所有册的EPC集合
+    ArrayList<String> currentEpcList = new ArrayList<>();
+    //当前盘点到的EPC集合
+    ArrayList<String> currentInvedList = new ArrayList<>();
     private FloatingActionButton inventoryButton;
     private MaterialDialog multipleDialog;
     private View multiContentView;
@@ -63,7 +71,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     private List<FileBean> excelfileBeans = new ArrayList<>();
     //按照封袋划分的文件集合
     private List<FileBean> bagFileBeans = new ArrayList<>();
-    private FileBeanAdapter fileBeanAdapter;
+    private FileBeanVertifyAdapter fileBeanAdapter;
     private HashSet<String> selectBoxs = new HashSet<>();
     //封袋号和对应的档案
     HashMap<String, ArrayList<FileBean>> bagMap = new HashMap<>();
@@ -78,6 +86,9 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     private View contentView;
     private TextView selectFileNum;
     private TextView invNum;
+    private EditText mSearchData;
+    private Button searchButton;
+    private TextView result;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,7 +100,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         excelfileBeans.clear();
         excelfileBeans.addAll(allFileBeans);
         divideByBoxcode(excelfileBeans);
-        divideByBag(excelfileBeans);
+        //divideByBag(excelfileBeans);
         fileBeanAdapter.notifyDataSetChanged();
     }
 
@@ -100,7 +111,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_shanghang, container, false);
+        return inflater.inflate(R.layout.fragment_hn_vertify, container, false);
     }
 
     @Override
@@ -112,6 +123,9 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         inventoryButton = (FloatingActionButton) getActivity().findViewById(R.id.inventoryButton);
         selectFileNum = (TextView) getActivity().findViewById(R.id.file_num);
         invNum = (TextView) getActivity().findViewById(R.id.inv_num);
+        mSearchData =  getActivity().findViewById(R.id.et_searvh);
+        searchButton =  getActivity().findViewById(R.id.bt_search);
+        result =  getActivity().findViewById(R.id.tv_result);
         btRead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,10 +150,27 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
                     }
                 }
                 try {
-                    ExcelUtils.writeExcel(getContext(), writeBeans, "excelTest03.xls");
+                    ExcelUtils.writeExcel(getContext(), writeBeans, "excelResult.xls");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchData = mSearchData.getText().toString();
+                if(searchData.isEmpty()){
+                    Toast.makeText(getActivity(),"请输入箱号再查询",Toast.LENGTH_SHORT).show();
+                }else {
+                    List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().getFileBeanByBoxCode(searchData);
+                    divideByBag(fileBeansByBoxCode);
+                    fileBeanAdapter.notifyDataSetChanged();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+
             }
         });
 
@@ -149,7 +180,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
                 showMultipleDialog();
             }
         });
-        fileBeanAdapter = new FileBeanAdapter(currentFileList, getActivity());
+        fileBeanAdapter = new FileBeanVertifyAdapter(currentFileList, getActivity());
         fileBeanAdapter.setOnItemClickListener(this);
         fileRecycle = (RecyclerView) getActivity().findViewById(R.id.file_recycle);
         fileRecycle.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -254,13 +285,17 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
             }
             fileBean.setInvStatus(isInved);
             fileBeanAdapter.notifyDataSetChanged();
-            int invedNum = 0;
-            for (FileBean bean : currentFileList) {
-                if(bean.getInvStatus()){
-                    invedNum++;
-                }
+            if(currentEpcList.contains(epc) && !currentInvedList.contains(epc)){
+                currentInvedList.add(epc);
             }
-            invNum.setText(String.valueOf(invedNum));
+            invNum.setText(String.valueOf(currentInvedList.size()));
+            if(currentEpcList.size() == currentInvedList.size()){
+                result.setText("完整");
+                result.setTextColor(getResources().getColor(R.color.blue));
+            }else {
+                result.setText("缺失");
+                result.setTextColor(getResources().getColor(R.color.red));
+            }
         }
     }
 
@@ -502,6 +537,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         bagMap.clear();
         epcFileMap.clear();
         currentFileList.clear();
+        currentEpcList.clear();
         //按照封袋编号划分档案
         for (FileBean fileBean : fileBeans) {
             if (!bagMap.containsKey(fileBean.getBagCode())) {
@@ -512,6 +548,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
                 ArrayList<FileBean> twoBeans = bagMap.get(fileBean.getBagCode());
                 twoBeans.add(fileBean);
             }
+            currentEpcList.add(fileBean.getEpcCode());
         }
         Set<Map.Entry<String, ArrayList<FileBean>>> entries = bagMap.entrySet();
         for (Map.Entry<String, ArrayList<FileBean>> entry : entries) {
@@ -524,20 +561,31 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
             currentFileList.add(toBean);
             epcFileMap.put(toBean.getEpcCode(), toBean);
         }
-        selectFileNum.setText(String.valueOf(currentFileList.size()));
+        selectFileNum.setText(String.valueOf(fileBeans.size()));
         invNum.setText("0");
     }
 
     public void copyFileBean(FileBean fromBean, FileBean toBean) {
+        toBean.setEpcCode(fromBean.getEpcCode().split("\\|")[0]);
         toBean.setBatchCode(fromBean.getBatchCode());
         toBean.setStartDate(fromBean.getStartDate());
         toBean.setEndDate(fromBean.getEndDate());
-        toBean.setEpcCode(fromBean.getEpcCode().split("\\|")[0]);
+        toBean.setBagSealDate(fromBean.getBagSealDate());
+        toBean.setBoxSealDate(fromBean.getBoxSealDate());
+        toBean.setInHouseDate(fromBean.getInHouseDate());
+        toBean.setOutHouseDate(fromBean.getOutHouseDate());
+        toBean.setDestoryDate(fromBean.getDestoryDate());
         toBean.setBagCode(fromBean.getBagCode());
+        toBean.setBarNumber(fromBean.getBarNumber());
         toBean.setRegisterCode(fromBean.getRegisterCode());
         toBean.setOrgName(fromBean.getOrgName());
         toBean.setFileType(fromBean.getFileType());
         toBean.setFileName(fromBean.getFileName());
+        toBean.setFileNumber(fromBean.getFileNumber());
+        toBean.setAreaCode(fromBean.getAreaCode());
+        toBean.setShelfCode(fromBean.getShelfCode());
+        toBean.setShelfFloorCode(fromBean.getShelfFloorCode());
+        toBean.setShelfColumCode(fromBean.getShelfColumCode());
         toBean.setFileNumber(fromBean.getFileNumber());
         toBean.setBoxCode(fromBean.getBoxCode());
     }

@@ -16,18 +16,30 @@ import java.util.Objects;
 @Entity
 public class FileBean {
 
+    //EPC编码
+    @PrimaryKey
+    @NonNull
+    private String epcCode;
     //批次号
     private String batchCode;
     //业务开始日期
     private String startDate;
     //业务结束日期
     private String endDate;
-    //EPC编码
-    @PrimaryKey
-    @NonNull
-    private String epcCode;
+    //封袋日期
+    private String bagSealDate;
+    //封箱日期
+    private String boxSealDate;
+    //入库日期
+    private String inHouseDate;
+    //出库日期
+    private String outHouseDate;
+    //销毁日期
+    private String destoryDate;
     //封袋编号
     private String bagCode;
+    //条形编号
+    private String barNumber;
     //登记机构号
     private String registerCode;
     //档案所属机构名称
@@ -38,7 +50,15 @@ public class FileBean {
     private String fileName;
     //档案本数
     private String fileNumber;
-    //档案箱编号
+    //区域编号
+    private String areaCode;
+    //档案架编号
+    private String shelfCode;
+    //层号
+    private String shelfFloorCode;
+    //列号
+    private String shelfColumCode;
+    //档案袋/箱编号
     private String boxCode;
     //盘点状态 0未盘点 1已经盘点
     @Ignore
@@ -158,6 +178,86 @@ public class FileBean {
 
     public void setEpcs(List<EpcBean> epcs) {
         this.epcs = epcs;
+    }
+
+    public String getBagSealDate() {
+        return bagSealDate;
+    }
+
+    public void setBagSealDate(String bagSealDate) {
+        this.bagSealDate = bagSealDate;
+    }
+
+    public String getBoxSealDate() {
+        return boxSealDate;
+    }
+
+    public void setBoxSealDate(String boxSealDate) {
+        this.boxSealDate = boxSealDate;
+    }
+
+    public String getInHouseDate() {
+        return inHouseDate;
+    }
+
+    public void setInHouseDate(String inHouseDate) {
+        this.inHouseDate = inHouseDate;
+    }
+
+    public String getOutHouseDate() {
+        return outHouseDate;
+    }
+
+    public void setOutHouseDate(String outHouseDate) {
+        this.outHouseDate = outHouseDate;
+    }
+
+    public String getDestoryDate() {
+        return destoryDate;
+    }
+
+    public void setDestoryDate(String destoryDate) {
+        this.destoryDate = destoryDate;
+    }
+
+    public String getBarNumber() {
+        return barNumber;
+    }
+
+    public void setBarNumber(String barNumber) {
+        this.barNumber = barNumber;
+    }
+
+    public String getAreaCode() {
+        return areaCode;
+    }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+    }
+
+    public String getShelfCode() {
+        return shelfCode;
+    }
+
+    public void setShelfCode(String shelfCode) {
+        this.shelfCode = shelfCode;
+    }
+
+    public String getShelfFloorCode() {
+        return shelfFloorCode;
+    }
+
+    public void setShelfFloorCode(String shelfFloorCode) {
+        this.shelfFloorCode = shelfFloorCode;
+    }
+
+    public String getShelfColumCode() {
+        return shelfColumCode;
+    }
+
+    public void setShelfColumCode(String shelfColumCode) {
+        this.shelfColumCode = shelfColumCode;
     }
 
     @Override
