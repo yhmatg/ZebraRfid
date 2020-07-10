@@ -34,9 +34,7 @@ import com.multilevel.treelist.TreeRecyclerAdapter;
 import com.zebra.rfidreader.demo.R;
 import com.zebra.rfidreader.demo.application.Application;
 import com.zebra.rfidreader.demo.common.ResponseHandlerInterfaces;
-import com.zebra.rfidreader.demo.common.hextoascii;
 import com.zebra.rfidreader.demo.home.MainActivity;
-import com.zebra.rfidreader.demo.inventory.InventoryFragment;
 import com.zebra.rfidreader.demo.inventory.InventoryListItem;
 
 import java.io.File;
@@ -49,7 +47,7 @@ import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ShanghangFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FileBeanAdapter.OnItemClickListener, EpcBeanAdapter.OnItemClickListener {
+public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FileBeanAdapter.OnItemClickListener, EpcBeanAdapter.OnItemClickListener {
     private Button btRead;
     private Button btWrite;
     private Button chooseBox;
@@ -95,8 +93,8 @@ public class ShanghangFragment extends Fragment implements ResponseHandlerInterf
         fileBeanAdapter.notifyDataSetChanged();
     }
 
-    public static ShanghangFragment newInstance() {
-        return new ShanghangFragment();
+    public static SHInvFragment newInstance() {
+        return new SHInvFragment();
     }
 
     @Nullable

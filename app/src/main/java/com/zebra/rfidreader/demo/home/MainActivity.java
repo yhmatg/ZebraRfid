@@ -97,7 +97,7 @@ import com.zebra.rfidreader.demo.inventory.InventoryFragment;
 import com.zebra.rfidreader.demo.inventory.InventoryListItem;
 import com.zebra.rfidreader.demo.locate_tag.LocationingFragment;
 import com.zebra.rfidreader.demo.locate_tag.RangeGraph;
-import com.zebra.rfidreader.demo.nongshanghang.ShanghangFragment;
+import com.zebra.rfidreader.demo.nongshanghang.SHInvFragment;
 import com.zebra.rfidreader.demo.notifications.NotificationsService;
 import com.zebra.rfidreader.demo.rapidread.RapidReadFragment;
 import com.zebra.rfidreader.demo.reader_connection.ReadersListFragment;
@@ -879,7 +879,7 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
                 fragment = ProfileFragment.newInstance();
                 break;
             case 10:
-                fragment = ShanghangFragment.newInstance();
+                fragment = SHInvFragment.newInstance();
                 break;
         }
 
