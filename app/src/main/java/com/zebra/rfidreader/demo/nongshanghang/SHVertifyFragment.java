@@ -538,6 +538,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         epcFileMap.clear();
         currentFileList.clear();
         currentEpcList.clear();
+        currentInvedList.clear();
         //按照封袋编号划分档案
         for (FileBean fileBean : fileBeans) {
             if (!bagMap.containsKey(fileBean.getBagCode())) {
