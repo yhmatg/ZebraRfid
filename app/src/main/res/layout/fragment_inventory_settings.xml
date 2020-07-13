@@ -8,7 +8,7 @@
     android:layout_marginRight="@dimen/default_right_margin"
     android:layout_marginLeft="@dimen/default_left_margin"
     android:orientation="vertical"
-    tools:context="com.zebra.rfidreader.demo.activities.SettingsDetailActivity">
+    tools:context="com.zebra.rfidreader.nonghang.activities.SettingsDetailActivity">
     <TextView
         style="@style/style_medium_font"
         android:layout_width="match_parent"

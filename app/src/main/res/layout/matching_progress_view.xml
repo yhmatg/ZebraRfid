@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.zebra.rfidreader.demo.rapidread.MatchModeProgressView
+    <com.zebra.rfidreader.nonghang.rapidread.MatchModeProgressView
         android:id="@+id/MatchModeView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

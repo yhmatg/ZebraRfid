@@ -5,7 +5,7 @@
     android:fillViewport="true"
     android:orientation="vertical"
     style="@style/base_layout_style"
-    tools:context="com.zebra.rfidreader.demo.settings.SettingsDetailActivity">
+    tools:context="com.zebra.rfidreader.nonghang.settings.SettingsDetailActivity">
 
     <TextView
         android:id="@+id/readerSettingsTitle"

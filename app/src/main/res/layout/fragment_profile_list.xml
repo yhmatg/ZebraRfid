@@ -8,5 +8,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.zebra.rfidreader.demo.settings.ProfileFragment"
+        tools:context="com.zebra.rfidreader.nonghang.settings.ProfileFragment"
         tools:listitem="@layout/fragment_profile"/>

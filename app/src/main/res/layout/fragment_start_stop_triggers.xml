@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true"
-    tools:context="com.zebra.rfidreader.demo.fragments.StartStopTriggersFragment">
+    tools:context="com.zebra.rfidreader.nonghang.fragments.StartStopTriggersFragment">
 
     <LinearLayout
         style="@style/base_layout_style"

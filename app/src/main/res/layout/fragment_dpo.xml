@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/base_layout_style"
     android:orientation="vertical"
-    tools:context="com.zebra.rfidreader.demo.fragments.DPOSettingsFragment">
+    tools:context="com.zebra.rfidreader.nonghang.fragments.DPOSettingsFragment">
 
     <TableRow
         android:layout_width="match_parent"

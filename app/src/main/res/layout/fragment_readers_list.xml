@@ -3,7 +3,7 @@
     style="@style/base_layout_style"
     android:layout_marginTop="@dimen/default_top_margin"
     android:orientation="vertical"
-    tools:context="com.zebra.rfidreader.demo.fragments.ReadersListFragment">
+    tools:context="com.zebra.rfidreader.nonghang.fragments.ReadersListFragment">
 
     <TextView
         android:id="@+id/bondedReadersTitle"

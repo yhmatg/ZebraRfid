@@ -8,5 +8,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.zebra.rfidreader.demo.settings.AdvancedOptionItemFragment"
+        tools:context="com.zebra.rfidreader.nonghang.settings.AdvancedOptionItemFragment"
         tools:listitem="@layout/fragment_advancedoptionitem"/>

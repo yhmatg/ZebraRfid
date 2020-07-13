@@ -3,7 +3,7 @@
     style="@style/base_layout_style"
     android:orientation="vertical"
     android:focusableInTouchMode="true"
-    tools:context="com.zebra.rfidreader.demo.fragments.AntennaSettingsFragment">
+    tools:context="com.zebra.rfidreader.nonghang.fragments.AntennaSettingsFragment">
 
     <TableRow
         android:id="@+id/singulationControlRow1"

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/base_layout_style"
     android:orientation="vertical"
-    tools:context="com.zebra.rfidreader.demo.settings.LedFragment">
+    tools:context="com.zebra.rfidreader.nonghang.settings.LedFragment">
 
     <LinearLayout
         android:id="@+id/num_layout"
