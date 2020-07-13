@@ -2124,7 +2124,7 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
      * @param view - Button clicked
      */
     public void locateClicked(View view) {
-        selectNavigationMenuItem(2);
+        selectNavigationMenuItem(7);
         selectItem(3);
     }
 
@@ -2134,7 +2134,7 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
      * @param view - Button clicked
      */
     public void settClicked(View view) {
-        selectNavigationMenuItem(5);
+        selectNavigationMenuItem(8);
         selectItem(4);
     }
 
@@ -2144,7 +2144,7 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
      * @param view - Button clicked
      */
     public void accessClicked(View view) {
-        selectNavigationMenuItem(3);
+        selectNavigationMenuItem(2);
         selectItem(5);
     }
 
@@ -2154,22 +2154,22 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
      * @param view - Button clicked
      */
     public void filterClicked(View view) {
-        selectNavigationMenuItem(6);
+        selectNavigationMenuItem(4);
         selectItem(6);
     }
 
     public void demoClicked(View view) {
-        selectNavigationMenuItem(8);
+        selectNavigationMenuItem(5);
         selectItem(10);
     }
 
     public void vertifyClicked(View view) {
-        selectNavigationMenuItem(9);
+        selectNavigationMenuItem(6);
         selectItem(11);
     }
 
     public void dataClicked(View view) {
-        selectNavigationMenuItem(10);
+        selectNavigationMenuItem(9);
         selectItem(12);
     }
 
@@ -2178,7 +2178,7 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
      * About option in {@link com.zebra.rfidreader.nonghang.home.AboutFragment} is selected
      */
     public void aboutClicked() {
-        selectNavigationMenuItem(7);
+        selectNavigationMenuItem(10);
         selectItem(8);
     }
 

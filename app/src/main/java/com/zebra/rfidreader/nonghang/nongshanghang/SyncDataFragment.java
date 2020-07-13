@@ -28,6 +28,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class SyncDataFragment extends Fragment {
     private Button btRead;
+    private Button btReduce;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +43,8 @@ public class SyncDataFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        btRead = (Button) getActivity().findViewById(R.id.bt_read);
+        btRead = (Button) getActivity().findViewById(R.id.bt_data_in);
+        btReduce = (Button) getActivity().findViewById(R.id.bt_data_reduce);
         btRead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +52,13 @@ public class SyncDataFragment extends Fragment {
                 intent.setType("*/*");//设置任意类型
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, 1);
+            }
+        });
+        btReduce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DemoDatabase.getInstance().getFileBeanDao().deleteAllData();
+                Toast.makeText(getActivity(),"数据还原成功", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -85,7 +94,7 @@ public class SyncDataFragment extends Fragment {
                     List<FileBean> fileBeans = ExcelUtils.read2DB(dir, getActivity());
                     DemoDatabase.getInstance().getFileBeanDao().deleteAllData();
                     DemoDatabase.getInstance().getFileBeanDao().insertItems(fileBeans);
-                    Toast.makeText(getActivity(),"导入成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"数据导入成功", Toast.LENGTH_SHORT).show();
                 }
             }
         }

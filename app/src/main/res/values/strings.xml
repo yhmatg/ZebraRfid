@@ -12,16 +12,16 @@
         <item>主页</item>
         <item>Rapid Read</item>
         <item>Inventory</item>
-        <item>定位</item>
-        <item>设置</item>
+        <item>档案查找</item>
+        <item>系统设置</item>
         <item>Access Control</item>
         <item>Pre Filters</item>
         <item>Readers List</item>
         <item>关于</item>
         <item>Profiles</item>
-        <item>盘点</item>
+        <item>档案盘点</item>
         <item>贴标验证</item>
-        <item>数据同步</item>
+        <item>数据管理</item>
     </string-array>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -523,13 +523,15 @@
     <string name="action_locate">Locate</string>
     <string name="invalid_antenna_power">Invalid antenna power value</string>
     <string name="loading_csv">Importing tag list from CSV file</string>
-    <string name="file_inv_str">盘点</string>
-    <string name="file_loc_str">定位</string>
-    <string name="setting_str">设置</string>
-    <string name="inv_app">盘点应用</string>
+    <string name="file_inv_str">档案盘点</string>
+    <string name="file_loc_str">档案查找</string>
+    <string name="setting_str">系统设置</string>
+    <string name="inv_app">档案盘点应用</string>
     <string name="hn_verify_str">贴标验证</string>
     <string name="application_version">版本号</string>
-    <string name="sync_data">数据同步</string>
+    <string name="sync_data">数据管理</string>
+    <string name="data_in">数据导入</string>
+    <string name="data_reduce">数据还原</string>
 
     <string-array name="inv_menu_items_for_matching_tags">
         <item>All</item>

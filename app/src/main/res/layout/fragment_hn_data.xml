@@ -1,13 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp">
     <Button
-        android:id="@+id/bt_read"
-        android:layout_width="match_parent"
+        android:id="@+id/bt_data_in"
+        style="@style/DashboardButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="导入数据"
-        android:textSize="20dp" />
+        android:layout_gravity="top"
+        android:layout_marginStart="30dp"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/hn_data_in_icon"
+        android:drawablePadding="5dp"
+        android:gravity="center_horizontal|top"
+        android:text="@string/data_in" />
+
+    <Button
+        android:id="@+id/bt_data_reduce"
+        style="@style/DashboardButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginEnd="30dp"
+        android:visibility="visible"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/hn_data_reduce_icon"
+        android:drawablePadding="5dp"
+        android:gravity="center_horizontal|top"
+        android:text="@string/data_reduce" />
 </LinearLayout>

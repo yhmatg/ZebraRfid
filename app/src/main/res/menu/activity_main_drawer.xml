@@ -14,10 +14,7 @@
             android:icon="@drawable/ic_nav_inv"
             android:title="Inventory"
             android:visible="false"/>
-        <item
-            android:id="@+id/nav_locatetag"
-            android:icon="@drawable/hn_loction_icon"
-            android:title="定位" />
+
         <item
             android:id="@+id/nav_access_control"
             android:icon="@drawable/ic_nav_access"
@@ -30,32 +27,40 @@
             android:visible="false"/>
 
         <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/hn_setting_icon"
-            android:title="设置" />
-
-        <item
             android:id="@+id/nav_prefilters"
             android:icon="@drawable/ic_nav_filter"
             android:title="Pre Filters"
             android:visible="false"/>
-        <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/ic_action_about"
-            android:title="关于" />
+
         <item
             android:id="@+id/shanghang_inv"
             android:icon="@drawable/hn_inv_icon"
-            android:title="盘点" />
+            android:title="档案盘点" />
 
         <item
             android:id="@+id/shanghang_vertify"
             android:icon="@drawable/hn_vertify_icon"
             android:title="贴标认证" />
+
+        <item
+            android:id="@+id/nav_locatetag"
+            android:icon="@drawable/hn_loction_icon"
+            android:title="档案查找" />
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/hn_setting_icon"
+            android:title="系统设置" />
+
         <item
             android:id="@+id/shanghang_data"
             android:icon="@drawable/hn_data_icon"
-            android:title="数据同步" />
+            android:title="数据管理" />
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_action_about"
+            android:title="关于" />
     </group>
 
 </menu>
