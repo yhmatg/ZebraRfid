@@ -2,6 +2,7 @@ package com.zebra.rfidreader.demo.nongshanghang;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -29,7 +30,7 @@ public class SimpleTreeRecyclerAdapter extends TreeRecyclerAdapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyHoder(View.inflate(mContext, R.layout.tree_adapter_item,null));
+        return new MyHoder(LayoutInflater.from(mContext).inflate(R.layout.tree_adapter_item, parent, false));
     }
 
     @Override

@@ -65,8 +65,8 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     private View multiContentView;
     private RecyclerView multiRecycle;
     private RecyclerView fileRecycle;
-    protected List<Node> multiDatas = new ArrayList<>();
-    private TreeRecyclerAdapter multiAdapter;
+    protected List<BoxBean> multiDatas = new ArrayList<>();
+    private SingleSelectAdapter multiAdapter;
     //没有按照封袋划分的文件集合
     private List<FileBean> excelfileBeans = new ArrayList<>();
     //按照封袋划分的文件集合
@@ -229,22 +229,24 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         TextView tvCancel = (TextView) multiContentView.findViewById(R.id.tv_cancle);
         multiRecycle = (RecyclerView) multiContentView.findViewById(R.id.multi_recycle);
         multiRecycle.setLayoutManager(new LinearLayoutManager(getActivity()));
-        multiAdapter = new SimpleTreeRecyclerAdapter(multiRecycle, getActivity(),
-                multiDatas, 2, R.drawable.tree_ex, R.drawable.tree_ec);
+        multiAdapter = new SingleSelectAdapter(multiDatas, getActivity());
         multiRecycle.setAdapter(multiAdapter);
         tvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Node> allNodes = multiAdapter.getAllNodes();
-                selectBoxs.clear();
-                for (Node node : allNodes) {
-                    if (node.isChecked()) {
-                        selectBoxs.add(node.getName());
-                    }
+                BoxBean selectedBean = multiAdapter.getSelectedBoxBean();
+                if(selectedBean != null && selectedBean.isChecked()){
+                    List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().getFileBeanByBoxCode(selectedBean.getBoxName());
+                    divideByBag(fileBeansByBoxCode);
+                    fileBeanAdapter.notifyDataSetChanged();
+                    result.setText("缺失");
+                    result.setTextColor(getResources().getColor(R.color.red));
+                }else {
+                    divideByBag(new ArrayList<FileBean>());
+                    fileBeanAdapter.notifyDataSetChanged();
+                    result.setText("无");
+                    result.setTextColor(getResources().getColor(R.color.red));
                 }
-                List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(selectBoxs);
-                divideByBag(fileBeansByBoxCode);
-                fileBeanAdapter.notifyDataSetChanged();
                 if (multipleDialog != null) {
                     multipleDialog.dismiss();
                 }
@@ -429,17 +431,15 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     }
 
     private void divideByBoxcode(List<FileBean> fileBeans) {
-        multiAdapter.removeData(multiDatas);
         multiDatas.clear();
-        multiDatas.add(new Node("100", "-1", "全部"));
         ArrayList<String> boxCodes = new ArrayList<>();
         for (FileBean fileBean : fileBeans) {
             if (!boxCodes.contains(fileBean.getBoxCode())) {
                 boxCodes.add(fileBean.getBoxCode());
-                multiDatas.add(new Node(fileBean.getBoxCode(), "100", fileBean.getBoxCode()));
+                multiDatas.add(new BoxBean(fileBean.getBoxCode(),false));
             }
         }
-        multiAdapter.addData(multiDatas);
+        multiAdapter.notifyDataSetChanged();
     }
 
     public String getPath(final Context context, final Uri uri) {
