@@ -137,6 +137,38 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_data"
+                style="@style/DashboardButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/hn_data_icon"
+                android:drawablePadding="5dp"
+                android:gravity="center_horizontal|top"
+                android:onClick="dataClicked"
+                android:text="@string/sync_data" />
+
+            <Button
+                android:visibility="invisible"
+                style="@style/DashboardButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/hn_setting_icon"
+                android:drawablePadding="5dp"
+                android:gravity="center_horizontal|top"
+                android:onClick="settClicked"
+                android:text="@string/setting_str" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"

@@ -21,6 +21,7 @@
         <item>Profiles</item>
         <item>盘点</item>
         <item>贴标验证</item>
+        <item>数据同步</item>
     </string-array>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -528,6 +529,7 @@
     <string name="inv_app">盘点应用</string>
     <string name="hn_verify_str">贴标验证</string>
     <string name="application_version">版本号</string>
+    <string name="sync_data">数据同步</string>
 
     <string-array name="inv_menu_items_for_matching_tags">
         <item>All</item>

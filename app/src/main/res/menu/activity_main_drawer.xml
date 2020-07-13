@@ -52,6 +52,10 @@
             android:id="@+id/shanghang_vertify"
             android:icon="@drawable/hn_vertify_icon"
             android:title="贴标认证" />
+        <item
+            android:id="@+id/shanghang_data"
+            android:icon="@drawable/hn_data_icon"
+            android:title="数据同步" />
     </group>
 
 </menu>

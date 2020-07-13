@@ -99,6 +99,7 @@ import com.zebra.rfidreader.demo.locate_tag.LocationingFragment;
 import com.zebra.rfidreader.demo.locate_tag.RangeGraph;
 import com.zebra.rfidreader.demo.nongshanghang.SHInvFragment;
 import com.zebra.rfidreader.demo.nongshanghang.SHVertifyFragment;
+import com.zebra.rfidreader.demo.nongshanghang.SyncDataFragment;
 import com.zebra.rfidreader.demo.notifications.NotificationsService;
 import com.zebra.rfidreader.demo.rapidread.RapidReadFragment;
 import com.zebra.rfidreader.demo.reader_connection.ReadersListFragment;
@@ -823,6 +824,12 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
             case R.id.shanghang_inv:
                 selectItem(10);
                 break;
+            case R.id.shanghang_vertify:
+                selectItem(11);
+                break;
+            case R.id.shanghang_data:
+                selectItem(12);
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -884,6 +891,9 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
                 break;
             case 11:
                 fragment = SHVertifyFragment.newInstance();
+                break;
+            case 12:
+                fragment = SyncDataFragment.newInstance();
                 break;
         }
 
@@ -2156,6 +2166,11 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
     public void vertifyClicked(View view) {
         selectNavigationMenuItem(9);
         selectItem(11);
+    }
+
+    public void dataClicked(View view) {
+        selectNavigationMenuItem(10);
+        selectItem(12);
     }
 
 
