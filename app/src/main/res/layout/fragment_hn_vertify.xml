@@ -144,27 +144,6 @@
         android:layout_marginBottom="60dp">
     </android.support.v7.widget.RecyclerView>
 
-    <Button
-        android:visibility="gone"
-        android:id="@+id/bt_read"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:text="读取"
-        android:textSize="20dp" />
-
-    <Button
-        android:visibility="gone"
-        android:id="@+id/bt_write"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:text="导出"
-        android:textSize="20dp" />
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/inventoryButton"
         android:layout_width="wrap_content"
