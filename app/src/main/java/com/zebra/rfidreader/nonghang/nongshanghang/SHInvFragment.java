@@ -77,6 +77,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     private View contentView;
     private TextView selectFileNum;
     private TextView invNum;
+    private TextView bookNum;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,6 +111,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         inventoryButton = (FloatingActionButton) getActivity().findViewById(R.id.inventoryButton);
         selectFileNum = (TextView) getActivity().findViewById(R.id.file_num);
         invNum = (TextView) getActivity().findViewById(R.id.inv_num);
+        bookNum = (TextView) getActivity().findViewById(R.id.book_num);
 
         btWrite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -381,6 +383,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         }
         selectFileNum.setText(String.valueOf(currentFileList.size()));
         invNum.setText("0");
+        bookNum.setText(String.valueOf(fileBeans.size()));
     }
 
     public void copyFileBean(FileBean fromBean, FileBean toBean) {

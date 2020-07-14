@@ -139,7 +139,6 @@
         android:id="@+id/file_recycle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bt_read"
         android:layout_below="@+id/tag_layout"
         android:layout_marginBottom="60dp">
     </android.support.v7.widget.RecyclerView>
