@@ -1,5 +1,6 @@
 package com.zebra.rfidreader.nonghang.nongshanghang;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +17,9 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jxl.Cell;
 import jxl.Sheet;
@@ -346,4 +351,61 @@ public class ExcelUtils {
 
     public static String root = Environment.getExternalStorageDirectory()
             .getPath();
+
+    //读取CSV文件
+    public static List<FileBean> readCSV(File file, Activity activity){
+        List<FileBean> list=new ArrayList<>();
+        FileInputStream fiStream;
+        Scanner scanner;
+        try {
+            fiStream=new FileInputStream(file);
+            scanner=new Scanner(fiStream,"UTF-8");
+            scanner.nextLine();//读下一行,把表头越过。不注释的话第一行数据就越过去了
+            int a=0;
+            while (scanner.hasNextLine()) {
+                String sourceString = scanner.nextLine();
+                Log.e("source-->", sourceString);
+                Pattern pattern = Pattern.compile("[^,]*,");
+                Matcher matcher = pattern.matcher(sourceString);
+                String[] lines=new String[21];
+                lines = sourceString.split(",");
+               /* int i=0;
+                while(matcher.find()) {
+                    String find = matcher.group().replace(",", "");
+                    lines[i]=find.trim();
+                    i++;
+                }*/
+                FileBean fileBean = new FileBean();
+                fileBean.setEpcCode(lines[0]);
+                fileBean.setBatchCode(lines[1]);
+                fileBean.setStartDate(lines[2]);
+                fileBean.setEndDate(lines[3]);
+                fileBean.setBagSealDate(lines[4]);
+                fileBean.setBoxSealDate(lines[5]);
+                fileBean.setInHouseDate(lines[6]);
+                fileBean.setOutHouseDate(lines[7]);
+                fileBean.setDestoryDate(lines[8]);
+                fileBean.setBagCode(lines[9]);
+                fileBean.setBarNumber(lines[10]);
+                fileBean.setRegisterCode(lines[11]);
+                fileBean.setOrgName(lines[12]);
+                fileBean.setFileType(lines[13]);
+                fileBean.setFileName(lines[14]);
+                fileBean.setFileNumber(lines[15]);
+                fileBean.setAreaCode(lines[16]);
+                fileBean.setShelfCode(lines[17]);
+                fileBean.setShelfFloorCode(lines[18]);
+                fileBean.setShelfColumCode(lines[19]);
+                fileBean.setBoxCode(lines[20]);
+                list.add(fileBean);
+                a++;
+                //i=0;
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

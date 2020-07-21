@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.zebra.rfidreader.nonghang.R;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -91,7 +92,12 @@ public class SyncDataFragment extends Fragment {
                     int suffixIndex = strArray.length - 1;
                     File dir = new File(upLoadFilePath);
                     //调用查询方法
-                    List<FileBean> fileBeans = ExcelUtils.read2DB(dir, getActivity());
+                    List<FileBean> fileBeans = new ArrayList<>();
+                    if(upLoadFilePath.endsWith(".xls")){
+                        fileBeans.addAll(ExcelUtils.read2DB(dir, getActivity()));
+                    }else if(upLoadFilePath.endsWith(".csv")){
+                        fileBeans.addAll(ExcelUtils.readCSV(dir, getActivity()));
+                    }
                     DemoDatabase.getInstance().getFileBeanDao().deleteAllData();
                     DemoDatabase.getInstance().getFileBeanDao().insertItems(fileBeans);
                     Toast.makeText(getActivity(),"数据导入成功", Toast.LENGTH_SHORT).show();
