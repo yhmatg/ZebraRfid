@@ -35,7 +35,7 @@ public class EpcBeanAdapter extends RecyclerView.Adapter<EpcBeanAdapter.ViewHold
         final EpcBean epcBean = mEpcBeans.get(i);
         viewHolder.epcData.setText(epcBean.getEpc());
         if(epcBean.isInved()){
-            viewHolder.status.setText("已盘");
+            viewHolder.status.setText("正常");
             viewHolder.status.setTextColor(mContext.getResources().getColor(R.color.blue));
         }else{
             viewHolder.status.setText("未盘");

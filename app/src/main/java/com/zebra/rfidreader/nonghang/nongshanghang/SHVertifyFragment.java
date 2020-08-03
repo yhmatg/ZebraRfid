@@ -233,35 +233,39 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         String hexEpc = inventoryListItem.getTagID();
         //ascii
         String epc = hex2ascii(hexEpc);
-        String[] split = epc.split("\\|");
-        String epcHead = split[0];
-        Log.e("epc1=====", hexEpc);
-        Log.e("epc2=====", epcHead);
-        FileBean fileBean = epcFileMap.get(epcHead);
-        boolean isInved = true;
-        if (fileBean != null) {
-            for (EpcBean fileBeanEpc : fileBean.getEpcs()) {
-                if (epc.equals(fileBeanEpc.getEpc())) {
-                    fileBeanEpc.setInved(true);
+        /*String[] split = epc.split("\\|");
+        String epcHead = split[0];*/
+        if(epc.length() >= 14){
+            String epcHead = epc.substring(0,14);
+            Log.e("epc1=====", hexEpc);
+            Log.e("epc2=====", epcHead);
+            FileBean fileBean = epcFileMap.get(epcHead);
+            boolean isInved = true;
+            if (fileBean != null) {
+                for (EpcBean fileBeanEpc : fileBean.getEpcs()) {
+                    if (epc.equals(fileBeanEpc.getEpc())) {
+                        fileBeanEpc.setInved(true);
+                    }
+                    if (!fileBeanEpc.isInved()) {
+                        isInved = false;
+                    }
                 }
-                if (!fileBeanEpc.isInved()) {
-                    isInved = false;
+                fileBean.setInvStatus(isInved);
+                fileBeanAdapter.notifyDataSetChanged();
+                if(currentEpcList.contains(epc) && !currentInvedList.contains(epc)){
+                    currentInvedList.add(epc);
                 }
-            }
-            fileBean.setInvStatus(isInved);
-            fileBeanAdapter.notifyDataSetChanged();
-            if(currentEpcList.contains(epc) && !currentInvedList.contains(epc)){
-                currentInvedList.add(epc);
-            }
-            invNum.setText(String.valueOf(currentInvedList.size()));
-            if(currentEpcList.size() == currentInvedList.size()){
-                result.setText("完整");
-                result.setTextColor(getResources().getColor(R.color.blue));
-            }else {
-                result.setText("缺失");
-                result.setTextColor(getResources().getColor(R.color.red));
+                invNum.setText(String.valueOf(currentInvedList.size()));
+                if(currentEpcList.size() == currentInvedList.size()){
+                    result.setText("完整");
+                    result.setTextColor(getResources().getColor(R.color.blue));
+                }else {
+                    result.setText("缺失");
+                    result.setTextColor(getResources().getColor(R.color.red));
+                }
             }
         }
+
     }
 
     private static String hex2ascii(String tagID) {
@@ -396,7 +400,8 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     }
 
     public void copyFileBean(FileBean fromBean, FileBean toBean) {
-        toBean.setEpcCode(fromBean.getEpcCode().split("\\|")[0]);
+        //toBean.setEpcCode(fromBean.getEpcCode().split("\\|")[0]);
+        toBean.setEpcCode(fromBean.getEpcCode().substring(0,14));
         toBean.setBatchCode(fromBean.getBatchCode());
         toBean.setStartDate(fromBean.getStartDate());
         toBean.setEndDate(fromBean.getEndDate());

@@ -95,7 +95,7 @@ public class SyncDataFragment extends Fragment {
                     List<FileBean> fileBeans = new ArrayList<>();
                     if(upLoadFilePath.endsWith(".xls")){
                         fileBeans.addAll(ExcelUtils.read2DB(dir, getActivity()));
-                    }else if(upLoadFilePath.endsWith(".csv")){
+                    }else if(upLoadFilePath.endsWith(".csv") || upLoadFilePath.endsWith(".txt")){
                         fileBeans.addAll(ExcelUtils.readCSV(dir, getActivity()));
                     }
                     DemoDatabase.getInstance().getFileBeanDao().deleteAllData();

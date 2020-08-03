@@ -38,7 +38,9 @@ import com.zebra.rfidreader.nonghang.home.MainActivity;
 import com.zebra.rfidreader.nonghang.inventory.InventoryListItem;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -127,7 +129,10 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                     }
                 }
                 try {
-                    ExcelUtils.writeExcel(getContext(), writeBeans, "excelTest03.xls");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss");
+                    Date d = new Date(System.currentTimeMillis());
+                    String dataStr = sdf.format(d);
+                    ExcelUtils.writeExcel(getContext(), writeBeans,  dataStr + "result.xls");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -228,31 +233,35 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         String hexEpc = inventoryListItem.getTagID();
         //ascii
         String epc = hex2ascii(hexEpc);
-        String[] split = epc.split("\\|");
-        String epcHead = split[0];
-        Log.e("epc1=====", hexEpc);
-        Log.e("epc2=====", epcHead);
-        FileBean fileBean = epcFileMap.get(epcHead);
-        boolean isInved = true;
-        if (fileBean != null) {
-            for (EpcBean fileBeanEpc : fileBean.getEpcs()) {
-                if (epc.equals(fileBeanEpc.getEpc())) {
-                    fileBeanEpc.setInved(true);
+        /*String[] split = epc.split("\\|");
+        String epcHead = split[0];*/
+        if(epc.length() >= 14){
+            String epcHead = epc.substring(0,14);
+            Log.e("epc1=====", hexEpc);
+            Log.e("epc2=====", epcHead);
+            FileBean fileBean = epcFileMap.get(epcHead);
+            boolean isInved = true;
+            if (fileBean != null) {
+                for (EpcBean fileBeanEpc : fileBean.getEpcs()) {
+                    if (epc.equals(fileBeanEpc.getEpc())) {
+                        fileBeanEpc.setInved(true);
+                    }
+                    if (!fileBeanEpc.isInved()) {
+                        isInved = false;
+                    }
                 }
-                if (!fileBeanEpc.isInved()) {
-                    isInved = false;
+                fileBean.setInvStatus(isInved);
+                fileBeanAdapter.notifyDataSetChanged();
+                int invedNum = 0;
+                for (FileBean bean : currentFileList) {
+                    if(bean.getInvStatus()){
+                        invedNum++;
+                    }
                 }
+                invNum.setText(String.valueOf(invedNum));
             }
-            fileBean.setInvStatus(isInved);
-            fileBeanAdapter.notifyDataSetChanged();
-            int invedNum = 0;
-            for (FileBean bean : currentFileList) {
-                if(bean.getInvStatus()){
-                    invedNum++;
-                }
-            }
-            invNum.setText(String.valueOf(invedNum));
         }
+
     }
 
     private static String hex2ascii(String tagID) {
@@ -387,7 +396,8 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     }
 
     public void copyFileBean(FileBean fromBean, FileBean toBean) {
-        toBean.setEpcCode(fromBean.getEpcCode().split("\\|")[0]);
+        //toBean.setEpcCode(fromBean.getEpcCode().split("\\|")[0]);
+        toBean.setEpcCode(fromBean.getEpcCode().substring(0,14));
         toBean.setBatchCode(fromBean.getBatchCode());
         toBean.setStartDate(fromBean.getStartDate());
         toBean.setEndDate(fromBean.getEndDate());
