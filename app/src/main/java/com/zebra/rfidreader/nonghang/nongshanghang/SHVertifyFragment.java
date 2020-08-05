@@ -127,7 +127,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
                 if(searchData.isEmpty()){
                     Toast.makeText(getActivity(),"请输入箱号再查询",Toast.LENGTH_SHORT).show();
                 }else {
-                    List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().getFileBeanByBoxCode(searchData);
+                    List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().SearchFileBeanByBoxCode(searchData);
                     divideByBag(fileBeansByBoxCode);
                     fileBeanAdapter.notifyDataSetChanged();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);

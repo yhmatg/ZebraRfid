@@ -19,6 +19,11 @@ public interface FileBeanDao extends BaseDao<FileBean> {
     @Query("SELECT * FROM FileBean ")
     public List<FileBean> getAllFileBeans();
 
+    //精确查询
     @Query("SELECT * FROM FileBean where boxCode = :mBoxCode")
     public List<FileBean> getFileBeanByBoxCode(String mBoxCode);
+
+    //模糊查询
+    @Query("SELECT * FROM FileBean where boxCode LIKE '%' || :mBoxCode || '%'")
+    public List<FileBean> SearchFileBeanByBoxCode(String mBoxCode);
 }
