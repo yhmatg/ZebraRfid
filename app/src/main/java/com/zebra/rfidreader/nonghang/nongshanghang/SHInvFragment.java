@@ -53,6 +53,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     private Button btWrite;
     private Button chooseBox;
     ArrayList<FileBean> currentFileList = new ArrayList<>();
+    ArrayList<FileBean> currentInvedFileList = new ArrayList<>();
     private FloatingActionButton inventoryButton;
     private MaterialDialog multipleDialog;
     private View multiContentView;
@@ -80,6 +81,9 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     private TextView selectFileNum;
     private TextView invNum;
     private TextView bookNum;
+    private TextView invedBookNum;
+    private List<String> currentEpcs = new ArrayList<>();
+    private List<String> currentInvedEpcs = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,6 +118,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         selectFileNum = (TextView) getActivity().findViewById(R.id.file_num);
         invNum = (TextView) getActivity().findViewById(R.id.inv_num);
         bookNum = (TextView) getActivity().findViewById(R.id.book_num);
+        invedBookNum = (TextView) getActivity().findViewById(R.id.inved_book_num);
 
         btWrite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,14 +256,22 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                     }
                 }
                 fileBean.setInvStatus(isInved);
+                if(!currentInvedFileList.contains(fileBean)){
+                    currentInvedFileList.add(fileBean);
+                }
                 fileBeanAdapter.notifyDataSetChanged();
-                int invedNum = 0;
+               /* int invedNum = 0;
                 for (FileBean bean : currentFileList) {
                     if(bean.getInvStatus()){
                         invedNum++;
                     }
                 }
-                invNum.setText(String.valueOf(invedNum));
+                invNum.setText(String.valueOf(invedNum));*/
+                invNum.setText(String.valueOf(currentInvedFileList.size()));
+                if(currentEpcs.contains(epc) && !currentInvedEpcs.contains(epc)){
+                    currentInvedEpcs.add(epc);
+                }
+                invedBookNum.setText(String.valueOf(currentInvedEpcs.size()));
             }
         }
 
@@ -368,6 +381,9 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         bagMap.clear();
         epcFileMap.clear();
         currentFileList.clear();
+        currentEpcs.clear();
+        currentInvedEpcs.clear();
+        currentInvedFileList.clear();
         //按照封袋编号划分档案
         for (FileBean fileBean : fileBeans) {
             if (!bagMap.containsKey(fileBean.getBagCode())) {
@@ -378,6 +394,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                 ArrayList<FileBean> twoBeans = bagMap.get(fileBean.getBagCode());
                 twoBeans.add(fileBean);
             }
+            currentEpcs.add(fileBean.getEpcCode());
         }
         Set<Map.Entry<String, ArrayList<FileBean>>> entries = bagMap.entrySet();
         for (Map.Entry<String, ArrayList<FileBean>> entry : entries) {
@@ -392,6 +409,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         }
         selectFileNum.setText(String.valueOf(currentFileList.size()));
         invNum.setText("0");
+        invedBookNum.setText("0");
         bookNum.setText(String.valueOf(fileBeans.size()));
     }
 

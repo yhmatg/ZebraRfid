@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="2"
             android:gravity="center"
             android:text="总封袋数："
             android:textSize="16sp" />
@@ -24,7 +24,7 @@
             android:id="@+id/file_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="0"
             android:textSize="16sp" />
@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="2"
             android:gravity="center"
             android:text="已盘袋数："
             android:textSize="16sp" />
@@ -41,15 +41,24 @@
             android:id="@+id/inv_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="0"
             android:textSize="16sp" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_below="@+id/num_layout"
+        android:id="@+id/book_num_layout"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="2"
             android:gravity="center"
             android:text="总册数："
             android:textSize="16sp" />
@@ -58,7 +67,24 @@
             android:id="@+id/book_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:gravity="center"
+            android:text="已盘册数："
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/inved_book_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="0"
             android:textSize="16sp" />
@@ -68,7 +94,7 @@
         android:id="@+id/tag_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/num_layout"
+        android:layout_below="@+id/book_num_layout"
         android:orientation="horizontal">
 
         <TextView
