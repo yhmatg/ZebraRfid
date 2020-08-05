@@ -88,10 +88,21 @@
     <Button
         android:id="@+id/bt_choose_box"
         android:layout_below="@+id/search_layout"
-        android:layout_width="match_parent"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="选择箱"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/bt_export"
+        android:layout_below="@+id/search_layout"
+        android:layout_width="160dp"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="导出"
         android:textSize="20dp" />
 
     <LinearLayout

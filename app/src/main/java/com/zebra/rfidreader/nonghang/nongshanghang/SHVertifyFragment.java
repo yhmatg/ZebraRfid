@@ -38,7 +38,9 @@ import com.zebra.rfidreader.nonghang.home.MainActivity;
 import com.zebra.rfidreader.nonghang.inventory.InventoryListItem;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -84,6 +86,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     private TextView invNum;
     private EditText mSearchData;
     private Button searchButton;
+    private Button exportButton;
     private TextView result;
 
     @Override
@@ -119,6 +122,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         invNum = (TextView) getActivity().findViewById(R.id.inv_num);
         mSearchData =  getActivity().findViewById(R.id.et_searvh);
         searchButton =  getActivity().findViewById(R.id.bt_search);
+        exportButton =  getActivity().findViewById(R.id.bt_export);
         result =  getActivity().findViewById(R.id.tv_result);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +138,31 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
                     imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                 }
 
+            }
+        });
+
+        exportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<FileBean> writeBeans = new ArrayList<>();
+                for (FileBean fileBean : currentFileList) {
+                    for (EpcBean epc : fileBean.getEpcs()) {
+                        FileBean toFileBean = new FileBean();
+                        copyFileBean(fileBean, toFileBean);
+                        toFileBean.setEpcCode(epc.getEpc());
+                        toFileBean.setInvStatus(epc.isInved());
+                        writeBeans.add(toFileBean);
+                    }
+                }
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HHmmss");
+                    Date d = new Date(System.currentTimeMillis());
+                    String dataStr = sdf.format(d);
+                    String boxName = (writeBeans.size() > 0 ? writeBeans.get(0).getBoxCode() : "") + ":";
+                    ExcelUtils.writeExcel(getContext(), writeBeans,  boxName + dataStr + ".xls");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
