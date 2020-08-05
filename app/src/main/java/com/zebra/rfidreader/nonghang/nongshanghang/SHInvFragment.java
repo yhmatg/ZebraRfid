@@ -129,10 +129,10 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                     }
                 }
                 try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HHmmss");
                     Date d = new Date(System.currentTimeMillis());
                     String dataStr = sdf.format(d);
-                    ExcelUtils.writeExcel(getContext(), writeBeans,  dataStr + "result.xls");
+                    ExcelUtils.writeExcel(getContext(), writeBeans,  dataStr + ".xls");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
