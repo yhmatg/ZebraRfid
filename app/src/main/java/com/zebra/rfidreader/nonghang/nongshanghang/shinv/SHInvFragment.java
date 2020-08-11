@@ -218,16 +218,30 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                     @Override
                     protected List<FileBean> doInBackground(Void... voids) {
                         List<FileBean> fileBeansByBoxCode = new ArrayList<>();
-                        if(selectBoxs.size() < 901){
+                        /*if (selectBoxs.size() < 900) {
                             List<FileBean> listOne = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(selectBoxs);
                             fileBeansByBoxCode.addAll(listOne);
-                        }else if(selectBoxs.size() < 1802){
-                            List<String> boxOne = selectBoxs.subList(0, 901);
+                        } else if (selectBoxs.size() < 1800) {
+                            List<String> boxOne = selectBoxs.subList(0, 900);
                             List<FileBean> listOne = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(boxOne);
                             fileBeansByBoxCode.addAll(listOne);
-                            List<String> boxTwo = selectBoxs.subList(901, selectBoxs.size());
+                            List<String> boxTwo = selectBoxs.subList(900, selectBoxs.size());
                             List<FileBean> listTwo = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(boxTwo);
                             fileBeansByBoxCode.addAll(listTwo);
+                        }*/
+                        int i = selectBoxs.size() / 900;
+                        if (selectBoxs.size() % 900 != 0) {
+                            i = i + 1;
+                        }
+                        for (int j = 0; j < i; j++) {
+                            List<String> boxOne = new ArrayList<>();
+                            if(j == i -1){
+                                boxOne = selectBoxs.subList(j * 900,selectBoxs.size());
+                            }else {
+                                boxOne = selectBoxs.subList(j * 900, (j + 1) * 900);
+                            }
+                            List<FileBean> listOne = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(boxOne);
+                            fileBeansByBoxCode.addAll(listOne);
                         }
                         return fileBeansByBoxCode;
                     }
