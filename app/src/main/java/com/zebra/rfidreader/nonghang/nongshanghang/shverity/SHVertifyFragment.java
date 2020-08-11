@@ -1,15 +1,6 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.shverity;
 
-import android.content.ContentUris;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -36,8 +27,12 @@ import com.zebra.rfidreader.nonghang.application.Application;
 import com.zebra.rfidreader.nonghang.common.ResponseHandlerInterfaces;
 import com.zebra.rfidreader.nonghang.home.MainActivity;
 import com.zebra.rfidreader.nonghang.inventory.InventoryListItem;
+import com.zebra.rfidreader.nonghang.nongshanghang.utils.ExcelUtils;
+import com.zebra.rfidreader.nonghang.nongshanghang.shinv.FileBean;
+import com.zebra.rfidreader.nonghang.nongshanghang.datebase.DemoDatabase;
+import com.zebra.rfidreader.nonghang.nongshanghang.shinv.EpcBean;
+import com.zebra.rfidreader.nonghang.nongshanghang.shinv.EpcBeanAdapter;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static android.app.Activity.RESULT_OK;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class SHVertifyFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FileBeanVertifyAdapter.OnItemClickListener, EpcBeanAdapter.OnItemClickListener {

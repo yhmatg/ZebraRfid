@@ -1,4 +1,4 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.shinv;
 
 import java.util.Objects;
 

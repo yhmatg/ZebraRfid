@@ -1,15 +1,6 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.shinv;
 
-import android.content.ContentUris;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -26,7 +17,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.multilevel.treelist.Node;
@@ -36,8 +26,9 @@ import com.zebra.rfidreader.nonghang.application.Application;
 import com.zebra.rfidreader.nonghang.common.ResponseHandlerInterfaces;
 import com.zebra.rfidreader.nonghang.home.MainActivity;
 import com.zebra.rfidreader.nonghang.inventory.InventoryListItem;
+import com.zebra.rfidreader.nonghang.nongshanghang.utils.ExcelUtils;
+import com.zebra.rfidreader.nonghang.nongshanghang.datebase.DemoDatabase;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,8 +37,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static android.app.Activity.RESULT_OK;
 
 public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FileBeanAdapter.OnItemClickListener, EpcBeanAdapter.OnItemClickListener {
     private Button btWrite;

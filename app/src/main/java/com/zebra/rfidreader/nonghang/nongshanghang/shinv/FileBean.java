@@ -1,4 +1,4 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.shinv;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;

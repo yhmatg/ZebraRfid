@@ -1,4 +1,4 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.shinv;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,80 +8,68 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.zebra.rfidreader.nonghang.R;
+
 import java.util.List;
 
-public class FileBeanAdapter extends RecyclerView.Adapter<FileBeanAdapter.ViewHolder>{
-    private List<FileBean> mAssetsInfos;
+public class EpcBeanAdapter extends RecyclerView.Adapter<EpcBeanAdapter.ViewHolder>{
+    private List<EpcBean> mEpcBeans;
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
 
-    public FileBeanAdapter(List<FileBean> mAssetsInfos, Context mContext) {
-        this.mAssetsInfos = mAssetsInfos;
+    public EpcBeanAdapter(List<EpcBean> epcBeans, Context mContext) {
+        this.mEpcBeans = epcBeans;
         this.mContext = mContext;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View contentView = LayoutInflater.from(mContext).inflate(R.layout.file_adapter_item, viewGroup, false);
+        View contentView = LayoutInflater.from(mContext).inflate(R.layout.epc_adapter_item, viewGroup, false);
         return new ViewHolder(contentView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        final FileBean fileBean = mAssetsInfos.get(i);
-        viewHolder.bagCode.setText(fileBean.getBagCode());
-        viewHolder.fileNum.setText(fileBean.getFileNumber());
-        viewHolder.boxCode.setText(fileBean.getBoxCode());
-        int invStatus = 1;
-        for (EpcBean epc : fileBean.getEpcs()) {
-            if(!epc.isInved()){
-                invStatus = 0;
-                break;
-            }
-        }
-        if(invStatus == 0){
-           viewHolder.status.setText("未盘点");
-            viewHolder.status.setTextColor(mContext.getResources().getColor(R.color.red));
-        }else{
-            viewHolder.status.setText("已盘点");
+        final EpcBean epcBean = mEpcBeans.get(i);
+        viewHolder.epcData.setText(epcBean.getEpc());
+        if(epcBean.isInved()){
+            viewHolder.status.setText("正常");
             viewHolder.status.setTextColor(mContext.getResources().getColor(R.color.blue));
+        }else{
+            viewHolder.status.setText("未盘");
+            viewHolder.status.setTextColor(mContext.getResources().getColor(R.color.red));
         }
         viewHolder.fileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mOnItemClickListener != null){
-                    mOnItemClickListener.onItemClick(fileBean);
+                    mOnItemClickListener.onEpcItemClick(epcBean);
                 }
-
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mAssetsInfos == null ? 0: mAssetsInfos.size();
+        return mEpcBeans == null ? 0: mEpcBeans.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView bagCode;
-        public TextView fileNum;
-        public TextView boxCode;
+        public TextView epcData;
         public TextView status;
         public LinearLayout fileLayout;
         public ViewHolder(@NonNull View view) {
             super(view);
-            bagCode = (TextView)view.findViewById(R.id.bag_code);
-            fileNum = (TextView)view.findViewById(R.id.file_num);
-            boxCode = (TextView)view.findViewById(R.id.box_coe);
+            epcData = (TextView)view.findViewById(R.id.epc_data);
             status = (TextView)view.findViewById(R.id.inv_status);
             fileLayout = (LinearLayout)view.findViewById(R.id.file_layout);
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(FileBean fileBean);
+        void onEpcItemClick(EpcBean fileBean);
 
     }
 

@@ -1,4 +1,4 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.filepoint;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,33 +8,23 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.multilevel.treelist.Node;
-import com.multilevel.treelist.TreeRecyclerAdapter;
 import com.zebra.rfidreader.nonghang.R;
 import com.zebra.rfidreader.nonghang.application.Application;
 import com.zebra.rfidreader.nonghang.common.ResponseHandlerInterfaces;
 import com.zebra.rfidreader.nonghang.home.MainActivity;
 import com.zebra.rfidreader.nonghang.inventory.InventoryListItem;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class SHInvPointFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FilePointBeanAdapter.OnItemClickListener, EpcPointBeanAdapter.OnItemClickListener {
     private FloatingActionButton inventoryButton;

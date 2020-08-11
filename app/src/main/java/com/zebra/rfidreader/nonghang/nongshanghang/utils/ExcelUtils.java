@@ -1,4 +1,4 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.zebra.rfidreader.nonghang.nongshanghang.shinv.FileBean;
 
 import java.io.File;
 import java.io.FileInputStream;

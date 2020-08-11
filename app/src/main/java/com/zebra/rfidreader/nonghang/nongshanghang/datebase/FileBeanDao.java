@@ -1,8 +1,10 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.datebase;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 
+
+import com.zebra.rfidreader.nonghang.nongshanghang.shinv.FileBean;
 
 import java.util.List;
 import java.util.Set;

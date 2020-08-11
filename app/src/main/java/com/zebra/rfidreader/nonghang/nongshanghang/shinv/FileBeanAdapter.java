@@ -1,4 +1,4 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.shinv;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,17 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.zebra.rfidreader.nonghang.R;
 
 import java.util.List;
 
-public class FileBeanVertifyAdapter extends RecyclerView.Adapter<FileBeanVertifyAdapter.ViewHolder>{
+public class FileBeanAdapter extends RecyclerView.Adapter<FileBeanAdapter.ViewHolder>{
     private List<FileBean> mAssetsInfos;
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
 
-    public FileBeanVertifyAdapter(List<FileBean> mAssetsInfos, Context mContext) {
+    public FileBeanAdapter(List<FileBean> mAssetsInfos, Context mContext) {
         this.mAssetsInfos = mAssetsInfos;
         this.mContext = mContext;
     }
@@ -44,10 +43,10 @@ public class FileBeanVertifyAdapter extends RecyclerView.Adapter<FileBeanVertify
             }
         }
         if(invStatus == 0){
-           viewHolder.status.setText("缺失");
+           viewHolder.status.setText("未盘点");
             viewHolder.status.setTextColor(mContext.getResources().getColor(R.color.red));
         }else{
-            viewHolder.status.setText("正常");
+            viewHolder.status.setText("已盘点");
             viewHolder.status.setTextColor(mContext.getResources().getColor(R.color.blue));
         }
         viewHolder.fileLayout.setOnClickListener(new View.OnClickListener() {

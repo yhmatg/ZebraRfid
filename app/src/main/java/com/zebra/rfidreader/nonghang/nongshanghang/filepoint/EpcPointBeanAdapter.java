@@ -1,4 +1,4 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.filepoint;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,33 +13,32 @@ import com.zebra.rfidreader.nonghang.R;
 
 import java.util.List;
 
-public class FilePointBeanAdapter extends RecyclerView.Adapter<FilePointBeanAdapter.ViewHolder>{
-    private List<FilePointBean> mAssetsInfos;
+public class EpcPointBeanAdapter extends RecyclerView.Adapter<EpcPointBeanAdapter.ViewHolder>{
+    private List<String> mEpcBeans;
     private Context mContext;
     private OnItemClickListener mOnItemClickListener;
 
-    public FilePointBeanAdapter(List<FilePointBean> mAssetsInfos, Context mContext) {
-        this.mAssetsInfos = mAssetsInfos;
+    public EpcPointBeanAdapter(List<String> epcBeans, Context mContext) {
+        this.mEpcBeans = epcBeans;
         this.mContext = mContext;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View contentView = LayoutInflater.from(mContext).inflate(R.layout.file_point_item, viewGroup, false);
+        View contentView = LayoutInflater.from(mContext).inflate(R.layout.epc_point_item, viewGroup, false);
         return new ViewHolder(contentView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        final FilePointBean fileBean = mAssetsInfos.get(i);
-        viewHolder.bagCode.setText(fileBean.getBagCode());
-        viewHolder.fileNum.setText(String.valueOf(fileBean.getEpcs().size()));
+        final String epcBean = mEpcBeans.get(i);
+        viewHolder.epcData.setText(epcBean);
         viewHolder.fileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mOnItemClickListener != null){
-                    mOnItemClickListener.onItemClick(fileBean);
+                    mOnItemClickListener.onEpcItemClick(epcBean);
                 }
             }
         });
@@ -47,23 +46,21 @@ public class FilePointBeanAdapter extends RecyclerView.Adapter<FilePointBeanAdap
 
     @Override
     public int getItemCount() {
-        return mAssetsInfos == null ? 0: mAssetsInfos.size();
+        return mEpcBeans == null ? 0: mEpcBeans.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView bagCode;
-        public TextView fileNum;
+        public TextView epcData;
         public LinearLayout fileLayout;
         public ViewHolder(@NonNull View view) {
             super(view);
-            bagCode = (TextView)view.findViewById(R.id.bag_code);
-            fileNum = (TextView)view.findViewById(R.id.file_num);
+            epcData = (TextView)view.findViewById(R.id.epc_data);
             fileLayout = (LinearLayout)view.findViewById(R.id.file_layout);
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(FilePointBean fileBean);
+        void onEpcItemClick(String fileBean);
 
     }
 

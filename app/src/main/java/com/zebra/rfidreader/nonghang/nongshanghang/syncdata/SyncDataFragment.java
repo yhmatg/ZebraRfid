@@ -1,4 +1,4 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.syncdata;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -20,6 +20,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.zebra.rfidreader.nonghang.R;
+import com.zebra.rfidreader.nonghang.nongshanghang.utils.ExcelUtils;
+import com.zebra.rfidreader.nonghang.nongshanghang.shinv.FileBean;
+import com.zebra.rfidreader.nonghang.nongshanghang.datebase.DemoDatabase;
 
 import java.io.File;
 import java.util.ArrayList;

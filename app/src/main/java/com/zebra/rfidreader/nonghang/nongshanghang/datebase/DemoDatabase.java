@@ -1,4 +1,4 @@
-package com.zebra.rfidreader.nonghang.nongshanghang;
+package com.zebra.rfidreader.nonghang.nongshanghang.datebase;
 
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
@@ -9,6 +9,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 import com.zebra.rfidreader.nonghang.application.Application;
+import com.zebra.rfidreader.nonghang.nongshanghang.shinv.FileBean;
 
 @Database(entities = {
         FileBean.class
