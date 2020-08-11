@@ -16,7 +16,7 @@ public interface FileBeanDao extends BaseDao<FileBean> {
     public void deleteAllData();
 
     @Query("SELECT * FROM FileBean where boxCode in (:boxCodes)")
-    public List<FileBean> getFileBeansByBoxCode(Set<String> boxCodes);
+    public List<FileBean> getFileBeansByBoxCode(List<String> boxCodes);
 
     @Query("SELECT * FROM FileBean ")
     public List<FileBean> getAllFileBeans();

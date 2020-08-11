@@ -56,7 +56,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     //按照封袋划分的文件集合
     private List<FileBean> bagFileBeans = new ArrayList<>();
     private FileBeanAdapter fileBeanAdapter;
-    private HashSet<String> selectBoxs = new HashSet<>();
+    private ArrayList<String> selectBoxs = new ArrayList<>();
     //封袋号和对应的档案
     HashMap<String, ArrayList<FileBean>> bagMap = new HashMap<>();
     //epc和对应的档案
@@ -139,7 +139,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HHmmss");
                     Date d = new Date(System.currentTimeMillis());
                     String dataStr = sdf.format(d);
-                    ExcelUtils.writeExcel(getContext(), writeBeans,  dataStr + ".xls");
+                    ExcelUtils.writeExcel(getContext(), writeBeans, dataStr + ".xls");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -164,7 +164,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         contentView = LayoutInflater.from(getActivity()).inflate(R.layout.file_epc_dialog, null);
         tvBagCode = (TextView) contentView.findViewById(R.id.tv_bagCode);
         //tvEpc = (TextView) contentView.findViewById(R.id.tv_epc);
-        epcBeanAdapter = new EpcBeanAdapter(epcBeans,getActivity());
+        epcBeanAdapter = new EpcBeanAdapter(epcBeans, getActivity());
         epcBeanAdapter.setOnItemClickListener(this);
         EpcRecycle = (RecyclerView) contentView.findViewById(R.id.epc_recycle);
         EpcRecycle.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -217,7 +217,18 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                 new AsyncTask<Void, Void, List<FileBean>>() {
                     @Override
                     protected List<FileBean> doInBackground(Void... voids) {
-                        List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(selectBoxs);
+                        List<FileBean> fileBeansByBoxCode = new ArrayList<>();
+                        if(selectBoxs.size() < 901){
+                            List<FileBean> listOne = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(selectBoxs);
+                            fileBeansByBoxCode.addAll(listOne);
+                        }else if(selectBoxs.size() < 1802){
+                            List<String> boxOne = selectBoxs.subList(0, 901);
+                            List<FileBean> listOne = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(boxOne);
+                            fileBeansByBoxCode.addAll(listOne);
+                            List<String> boxTwo = selectBoxs.subList(901, selectBoxs.size());
+                            List<FileBean> listTwo = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(boxTwo);
+                            fileBeansByBoxCode.addAll(listTwo);
+                        }
                         return fileBeansByBoxCode;
                     }
 
@@ -253,8 +264,8 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         String epc = hex2ascii(hexEpc);
         /*String[] split = epc.split("\\|");
         String epcHead = split[0];*/
-        if(epc.length() >= 14){
-            String epcHead = epc.substring(0,14);
+        if (epc.length() >= 14) {
+            String epcHead = epc.substring(0, 14);
             Log.e("epc1=====", hexEpc);
             Log.e("epc2=====", epcHead);
             FileBean fileBean = epcFileMap.get(epcHead);
@@ -269,7 +280,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                     }
                 }
                 fileBean.setInvStatus(isInved);
-                if(!currentInvedFileList.contains(fileBean)){
+                if (!currentInvedFileList.contains(fileBean)) {
                     currentInvedFileList.add(fileBean);
                 }
                 fileBeanAdapter.notifyDataSetChanged();
@@ -281,7 +292,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                 }
                 invNum.setText(String.valueOf(invedNum));*/
                 invNum.setText(String.valueOf(currentInvedFileList.size()));
-                if(currentEpcs.contains(epc) && !currentInvedEpcs.contains(epc)){
+                if (currentEpcs.contains(epc) && !currentInvedEpcs.contains(epc)) {
                     currentInvedEpcs.add(epc);
                 }
                 invedBookNum.setText(String.valueOf(currentInvedEpcs.size()));
@@ -428,7 +439,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
 
     public void copyFileBean(FileBean fromBean, FileBean toBean) {
         //toBean.setEpcCode(fromBean.getEpcCode().split("\\|")[0]);
-        toBean.setEpcCode(fromBean.getEpcCode().substring(0,14));
+        toBean.setEpcCode(fromBean.getEpcCode().substring(0, 14));
         toBean.setBatchCode(fromBean.getBatchCode());
         toBean.setStartDate(fromBean.getStartDate());
         toBean.setEndDate(fromBean.getEndDate());
