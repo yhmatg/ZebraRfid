@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.media.ToneGenerator;
 
+import com.xuexiang.xlog.XLog;
+import com.xuexiang.xlog.crash.CrashHandler;
 import com.zebra.rfid.api3.Antennas;
 import com.zebra.rfid.api3.BEEPER_VOLUME;
 import com.zebra.rfid.api3.DYNAMIC_POWER_OPTIMIZATION;
@@ -21,6 +23,7 @@ import com.zebra.rfidreader.nonghang.common.MaxLimitArrayList;
 import com.zebra.rfidreader.nonghang.common.PreFilters;
 import com.zebra.rfidreader.nonghang.home.MainActivity;
 import com.zebra.rfidreader.nonghang.inventory.InventoryListItem;
+import com.zebra.rfidreader.nonghang.nongshanghang.utils.MyCrashListener;
 import com.zebra.rfidreader.nonghang.settings.ProfileContent;
 
 import java.util.ArrayList;
@@ -249,6 +252,8 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        XLog.init(this);
+        CrashHandler.getInstance().setOnCrashListener(new MyCrashListener());
     }
 
     public static Application getInstance(){

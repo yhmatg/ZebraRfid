@@ -44,4 +44,6 @@ dependencies {
     implementation 'com.github.zhangke3016:MultilevelTreeList:1.0.2'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
+    implementation 'com.github.xuexiangjys.XLog:xlog-core:1.2.1'
+    implementation 'com.github.xuexiangjys.XLog:xlog-crash:1.2.1'
 }
