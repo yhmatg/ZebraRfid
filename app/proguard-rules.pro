@@ -26,3 +26,15 @@
 -dontwarn org.apache.log4j.**
 
 -keep class org.apache.log4j.** { *; }
+
+-dontwarn java.awt.**
+
+-keep class java.awt.** { *;}
+
+-dontwarn javax.security.**
+
+-keep class javax.security.** { *; }
+
+-dontwarn java.beans.Beans
+
+-keep class java.beans.Beans { *; }

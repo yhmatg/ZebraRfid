@@ -243,13 +243,24 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         tvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BoxBean selectedBean = multiAdapter.getSelectedBoxBean();
+                final BoxBean selectedBean = multiAdapter.getSelectedBoxBean();
                 if(selectedBean != null && selectedBean.isChecked()){
-                    List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().getFileBeanByBoxCode(selectedBean.getBoxName());
-                    divideByBag(fileBeansByBoxCode);
-                    fileBeanAdapter.notifyDataSetChanged();
-                    result.setText("缺失");
-                    result.setTextColor(getResources().getColor(R.color.red));
+                    new AsyncTask<Void, Void, List<FileBean>>() {
+                        @Override
+                        protected List<FileBean> doInBackground(Void... voids) {
+                            List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().getFileBeanByBoxCode(selectedBean.getBoxName());
+                            return fileBeansByBoxCode;
+                        }
+
+                        @Override
+                        protected void onPostExecute(List<FileBean> fileBeans) {
+                            super.onPostExecute(fileBeans);
+                            divideByBag(fileBeans);
+                            fileBeanAdapter.notifyDataSetChanged();
+                            result.setText("缺失");
+                            result.setTextColor(getResources().getColor(R.color.red));
+                        }
+                    }.execute();
                 }else {
                     divideByBag(new ArrayList<FileBean>());
                     fileBeanAdapter.notifyDataSetChanged();

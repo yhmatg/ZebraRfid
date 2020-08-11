@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -95,15 +96,28 @@ public class SyncDataFragment extends Fragment {
                     int suffixIndex = strArray.length - 1;
                     File dir = new File(upLoadFilePath);
                     //调用查询方法
-                    List<FileBean> fileBeans = new ArrayList<>();
+                    final List<FileBean> fileBeans = new ArrayList<>();
                     if(upLoadFilePath.endsWith(".xls")){
                         fileBeans.addAll(ExcelUtils.read2DB(dir, getActivity()));
                     }else if(upLoadFilePath.endsWith(".csv") || upLoadFilePath.endsWith(".txt")){
                         fileBeans.addAll(ExcelUtils.readCSV(dir, getActivity()));
                     }
-                    DemoDatabase.getInstance().getFileBeanDao().deleteAllData();
-                    DemoDatabase.getInstance().getFileBeanDao().insertItems(fileBeans);
-                    Toast.makeText(getActivity(),"数据导入成功", Toast.LENGTH_SHORT).show();
+                    new AsyncTask<Void, Void, Void>() {
+
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            DemoDatabase.getInstance().getFileBeanDao().deleteAllData();
+                            DemoDatabase.getInstance().getFileBeanDao().insertItems(fileBeans);
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            Toast.makeText(getActivity(),"数据导入成功", Toast.LENGTH_SHORT).show();
+                        }
+                    }.execute();
+
                 }
             }
         }
