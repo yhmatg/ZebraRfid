@@ -22,6 +22,7 @@
         <item>档案盘点</item>
         <item>贴标验证</item>
         <item>数据管理</item>
+        <item>册数统计</item>
     </string-array>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -532,6 +533,7 @@
     <string name="sync_data">数据管理</string>
     <string name="data_in">数据导入</string>
     <string name="data_reduce">数据还原</string>
+    <string name="file_point_str">册数统计</string>
 
     <string-array name="inv_menu_items_for_matching_tags">
         <item>All</item>

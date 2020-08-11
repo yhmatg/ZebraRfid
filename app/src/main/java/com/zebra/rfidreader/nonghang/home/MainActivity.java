@@ -98,6 +98,7 @@ import com.zebra.rfidreader.nonghang.inventory.InventoryListItem;
 import com.zebra.rfidreader.nonghang.locate_tag.LocationingFragment;
 import com.zebra.rfidreader.nonghang.locate_tag.RangeGraph;
 import com.zebra.rfidreader.nonghang.nongshanghang.SHInvFragment;
+import com.zebra.rfidreader.nonghang.nongshanghang.SHInvPointFragment;
 import com.zebra.rfidreader.nonghang.nongshanghang.SHVertifyFragment;
 import com.zebra.rfidreader.nonghang.nongshanghang.SyncDataFragment;
 import com.zebra.rfidreader.nonghang.notifications.NotificationsService;
@@ -830,6 +831,9 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
             case R.id.shanghang_data:
                 selectItem(12);
                 break;
+            case R.id.file_point:
+                selectItem(13);
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -894,6 +898,9 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
                 break;
             case 12:
                 fragment = SyncDataFragment.newInstance();
+                break;
+            case 13:
+                fragment = SHInvPointFragment.newInstance();
                 break;
         }
 
@@ -2134,7 +2141,7 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
      * @param view - Button clicked
      */
     public void settClicked(View view) {
-        selectNavigationMenuItem(8);
+        selectNavigationMenuItem(10);
         selectItem(4);
     }
 
@@ -2173,12 +2180,15 @@ public class MainActivity extends AppCompatActivity implements Readers.RFIDReade
         selectItem(12);
     }
 
-
+    public void filePointClicked(View view) {
+        selectNavigationMenuItem(8);
+        selectItem(13);
+    }
     /**
      * About option in {@link com.zebra.rfidreader.nonghang.home.AboutFragment} is selected
      */
     public void aboutClicked() {
-        selectNavigationMenuItem(10);
+        selectNavigationMenuItem(11);
         selectItem(8);
     }
 

@@ -129,11 +129,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/hn_setting_icon"
+                android:drawableTop="@drawable/hn_inv_point"
                 android:drawablePadding="5dp"
                 android:gravity="center_horizontal|top"
-                android:onClick="settClicked"
-                android:text="@string/setting_str" />
+                android:onClick="filePointClicked"
+                android:text="@string/file_point_str" />
         </LinearLayout>
 
         <LinearLayout
@@ -155,7 +155,6 @@
                 android:text="@string/sync_data" />
 
             <Button
-                android:visibility="invisible"
                 style="@style/DashboardButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
