@@ -1,5 +1,6 @@
 package com.zebra.rfidreader.nonghang.nongshanghang.shinv;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -80,12 +81,24 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     }
 
     private void initData() {
-        List<FileBean> allFileBeans = DemoDatabase.getInstance().getFileBeanDao().getAllFileBeans();
-        excelfileBeans.clear();
-        excelfileBeans.addAll(allFileBeans);
-        divideByBoxcode(excelfileBeans);
-        //divideByBag(excelfileBeans);
-        fileBeanAdapter.notifyDataSetChanged();
+        new AsyncTask<Void, Void, List<FileBean>>() {
+            @Override
+            protected List<FileBean> doInBackground(Void... voids) {
+                List<FileBean> allFileBeans = DemoDatabase.getInstance().getFileBeanDao().getAllFileBeans();
+                return allFileBeans;
+            }
+
+            @Override
+            protected void onPostExecute(List<FileBean> fileBeans) {
+                super.onPostExecute(fileBeans);
+                excelfileBeans.clear();
+                excelfileBeans.addAll(fileBeans);
+                divideByBoxcode(excelfileBeans);
+                //divideByBag(excelfileBeans);
+                fileBeanAdapter.notifyDataSetChanged();
+            }
+        }.execute();
+
     }
 
     public static SHInvFragment newInstance() {
@@ -201,12 +214,23 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                         selectBoxs.add(node.getName());
                     }
                 }
-                List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(selectBoxs);
-                divideByBag(fileBeansByBoxCode);
-                fileBeanAdapter.notifyDataSetChanged();
-                if (multipleDialog != null) {
-                    multipleDialog.dismiss();
-                }
+                new AsyncTask<Void, Void, List<FileBean>>() {
+                    @Override
+                    protected List<FileBean> doInBackground(Void... voids) {
+                        List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(selectBoxs);
+                        return fileBeansByBoxCode;
+                    }
+
+                    @Override
+                    protected void onPostExecute(List<FileBean> fileBeans) {
+                        super.onPostExecute(fileBeans);
+                        divideByBag(fileBeans);
+                        fileBeanAdapter.notifyDataSetChanged();
+                        if (multipleDialog != null) {
+                            multipleDialog.dismiss();
+                        }
+                    }
+                }.execute();
             }
         });
         tvCancel.setOnClickListener(new View.OnClickListener() {

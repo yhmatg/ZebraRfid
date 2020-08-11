@@ -1,5 +1,6 @@
 package com.zebra.rfidreader.nonghang.nongshanghang.shverity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -89,12 +90,23 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     }
 
     private void initData() {
-        List<FileBean> allFileBeans = DemoDatabase.getInstance().getFileBeanDao().getAllFileBeans();
-        excelfileBeans.clear();
-        excelfileBeans.addAll(allFileBeans);
-        divideByBoxcode(excelfileBeans);
-        //divideByBag(excelfileBeans);
-        fileBeanAdapter.notifyDataSetChanged();
+        new AsyncTask<Void, Void, List<FileBean>>() {
+            @Override
+            protected List<FileBean> doInBackground(Void... voids) {
+                List<FileBean> allFileBeans = DemoDatabase.getInstance().getFileBeanDao().getAllFileBeans();
+                return allFileBeans;
+            }
+
+            @Override
+            protected void onPostExecute(List<FileBean> fileBeans) {
+                super.onPostExecute(fileBeans);
+                excelfileBeans.clear();
+                excelfileBeans.addAll(fileBeans);
+                divideByBoxcode(excelfileBeans);
+                //divideByBag(excelfileBeans);
+                fileBeanAdapter.notifyDataSetChanged();
+            }
+        }.execute();
     }
 
     public static SHVertifyFragment newInstance() {
@@ -121,15 +133,26 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String searchData = mSearchData.getText().toString();
+                final String searchData = mSearchData.getText().toString();
                 if(searchData.isEmpty()){
                     Toast.makeText(getActivity(),"请输入箱号再查询",Toast.LENGTH_SHORT).show();
                 }else {
-                    List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().SearchFileBeanByBoxCode(searchData);
-                    divideByBag(fileBeansByBoxCode);
-                    fileBeanAdapter.notifyDataSetChanged();
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                    new AsyncTask<Void, Void, List<FileBean>>() {
+                        @Override
+                        protected List<FileBean> doInBackground(Void... voids) {
+                            List<FileBean> fileBeansByBoxCode = DemoDatabase.getInstance().getFileBeanDao().SearchFileBeanByBoxCode(searchData);
+                            return fileBeansByBoxCode;
+                        }
+
+                        @Override
+                        protected void onPostExecute(List<FileBean> fileBeans) {
+                            super.onPostExecute(fileBeans);
+                            divideByBag(fileBeans);
+                            fileBeanAdapter.notifyDataSetChanged();
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                        }
+                    }.execute();
                 }
 
             }
