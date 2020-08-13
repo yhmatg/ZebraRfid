@@ -229,20 +229,29 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                             List<FileBean> listTwo = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(boxTwo);
                             fileBeansByBoxCode.addAll(listTwo);
                         }*/
-                        int i = selectBoxs.size() / 900;
-                        if (selectBoxs.size() % 900 != 0) {
-                            i = i + 1;
-                        }
-                        for (int j = 0; j < i; j++) {
-                            List<String> boxOne = new ArrayList<>();
-                            if(j == i -1){
-                                boxOne = selectBoxs.subList(j * 900,selectBoxs.size());
-                            }else {
-                                boxOne = selectBoxs.subList(j * 900, (j + 1) * 900);
+                        DemoDatabase.getInstance().beginTransaction();
+                        try {
+                            int i = selectBoxs.size() / 900;
+                            if (selectBoxs.size() % 900 != 0) {
+                                i = i + 1;
                             }
-                            List<FileBean> listOne = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(boxOne);
-                            fileBeansByBoxCode.addAll(listOne);
+                            for (int j = 0; j < i; j++) {
+                                List<String> boxOne = new ArrayList<>();
+                                if(j == i -1){
+                                    boxOne = selectBoxs.subList(j * 900,selectBoxs.size());
+                                }else {
+                                    boxOne = selectBoxs.subList(j * 900, (j + 1) * 900);
+                                }
+                                List<FileBean> listOne = DemoDatabase.getInstance().getFileBeanDao().getFileBeansByBoxCode(boxOne);
+                                fileBeansByBoxCode.addAll(listOne);
+                            }
+                            DemoDatabase.getInstance().setTransactionSuccessful();
+                        }catch (Exception e){
+
+                        }finally {
+                            DemoDatabase.getInstance().endTransaction();
                         }
+
                         return fileBeansByBoxCode;
                     }
 
