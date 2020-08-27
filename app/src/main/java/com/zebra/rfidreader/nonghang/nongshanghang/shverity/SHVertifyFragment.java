@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -83,6 +84,8 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     private Button searchButton;
     private Button exportButton;
     private TextView result;
+    private TextView remarkNum;
+    private HashMap<String,Integer> boxAndRemark = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,6 +133,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         searchButton =  getActivity().findViewById(R.id.bt_search);
         exportButton =  getActivity().findViewById(R.id.bt_export);
         result =  getActivity().findViewById(R.id.tv_result);
+        remarkNum = (TextView) getActivity().findViewById(R.id.remark_num);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,7 +248,9 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
             @Override
             public void onClick(View v) {
                 final BoxBean selectedBean = multiAdapter.getSelectedBoxBean();
+
                 if(selectedBean != null && selectedBean.isChecked()){
+                    remarkNum.setText(String.valueOf(boxAndRemark.get(selectedBean.getBoxName())));
                     new AsyncTask<Void, Void, List<FileBean>>() {
                         @Override
                         protected List<FileBean> doInBackground(Void... voids) {
@@ -417,6 +423,11 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         for (FileBean fileBean : fileBeans) {
             if (!boxCodes.contains(fileBean.getBoxCode())) {
                 boxCodes.add(fileBean.getBoxCode());
+                if(isInteger(fileBean.getRemarkNum())){
+                    boxAndRemark.put(fileBean.getBoxCode(),Integer.parseInt(fileBean.getRemarkNum()));
+                }else {
+                    boxAndRemark.put(fileBean.getBoxCode(),0);
+                }
                 multiDatas.add(new BoxBean(fileBean.getBoxCode(),false));
             }
         }
@@ -518,5 +529,10 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     public void onEpcItemClick(EpcBean fileBean) {
         Application.locateTag = asciiToHex(fileBean.getEpc());
         updateDialog.dismiss();
+    }
+
+    public  boolean isInteger(String str) {
+        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+        return pattern.matcher(str).matches();
     }
 }

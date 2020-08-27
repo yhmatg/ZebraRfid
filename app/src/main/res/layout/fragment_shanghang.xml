@@ -91,10 +91,35 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/remark_layout"
+        android:layout_below="@+id/book_num_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginStart="26dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="备注册数："
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_marginStart="20dp"
+            android:id="@+id/remark_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/tag_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/book_num_layout"
+        android:layout_below="@+id/remark_layout"
         android:orientation="horizontal">
 
         <TextView

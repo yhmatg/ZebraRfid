@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FileBeanAdapter.OnItemClickListener, EpcBeanAdapter.OnItemClickListener {
     private Button btWrite;
@@ -72,8 +73,11 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     private TextView invNum;
     private TextView bookNum;
     private TextView invedBookNum;
+    private TextView remarkNum;
     private List<String> currentEpcs = new ArrayList<>();
     private List<String> currentInvedEpcs = new ArrayList<>();
+    private HashMap<String,Integer> boxAndRemark = new HashMap<>();
+    private int allRemarkNum;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,6 +125,7 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         invNum = (TextView) getActivity().findViewById(R.id.inv_num);
         bookNum = (TextView) getActivity().findViewById(R.id.book_num);
         invedBookNum = (TextView) getActivity().findViewById(R.id.inved_book_num);
+        remarkNum = (TextView) getActivity().findViewById(R.id.remark_num);
 
         btWrite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,13 +212,16 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         tvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                allRemarkNum = 0;
                 List<Node> allNodes = multiAdapter.getAllNodes();
                 selectBoxs.clear();
                 for (Node node : allNodes) {
                     if (node.isChecked()) {
                         selectBoxs.add(node.getName());
+                        allRemarkNum += boxAndRemark.get(node.getName());
                     }
                 }
+                remarkNum.setText(String.valueOf(allRemarkNum));
                 new AsyncTask<Void, Void, List<FileBean>>() {
                     @Override
                     protected List<FileBean> doInBackground(Void... voids) {
@@ -414,10 +422,17 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         multiAdapter.removeData(multiDatas);
         multiDatas.clear();
         multiDatas.add(new Node("100", "-1", "全部"));
+        boxAndRemark.put("全部",0);
         ArrayList<String> boxCodes = new ArrayList<>();
         for (FileBean fileBean : fileBeans) {
             if (!boxCodes.contains(fileBean.getBoxCode())) {
                 boxCodes.add(fileBean.getBoxCode());
+                if(isInteger(fileBean.getRemarkNum())){
+                    boxAndRemark.put(fileBean.getBoxCode(),Integer.parseInt(fileBean.getRemarkNum()));
+                }else {
+                    boxAndRemark.put(fileBean.getBoxCode(),0);
+                }
+
                 multiDatas.add(new Node(fileBean.getBoxCode(), "100", fileBean.getBoxCode()));
             }
         }
@@ -522,5 +537,10 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     public void onEpcItemClick(EpcBean fileBean) {
         Application.locateTag = asciiToHex(fileBean.getEpc());
         updateDialog.dismiss();
+    }
+
+    public  boolean isInteger(String str) {
+        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+        return pattern.matcher(str).matches();
     }
 }

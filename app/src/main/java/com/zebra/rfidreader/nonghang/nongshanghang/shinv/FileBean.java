@@ -58,6 +58,8 @@ public class FileBean {
     //档案袋/箱编号
     private String boxCode;
     //盘点状态 0未盘点 1已经盘点
+    private String remarkNum;
+    //盘点状态 0未盘点 1已经盘点
     @Ignore
     private Boolean invStatus = false;
     @Ignore
@@ -255,6 +257,14 @@ public class FileBean {
 
     public void setShelfColumCode(String shelfColumCode) {
         this.shelfColumCode = shelfColumCode;
+    }
+
+    public String getRemarkNum() {
+        return remarkNum;
+    }
+
+    public void setRemarkNum(String remarkNum) {
+        this.remarkNum = remarkNum;
     }
 
     @Override

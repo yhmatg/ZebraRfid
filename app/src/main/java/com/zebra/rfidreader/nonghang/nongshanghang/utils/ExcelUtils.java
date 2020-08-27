@@ -205,6 +205,8 @@ public class ExcelUtils {
                 tc.setShelfColumCode(cell.getContents());
                 cell = sheet.getCell(20, i);
                 tc.setBoxCode(cell.getContents());
+                cell = sheet.getCell(21, i);
+                tc.setRemarkNum(cell.getContents());
                 Log.d("gaolei", "Row" + i + "---------" + tc.getEpcCode()
                         + tc.getBagCode() + tc.getBoxCode());
                 billList.add(tc);
@@ -240,7 +242,7 @@ public class ExcelUtils {
         }
 
         //这些是你要导出的字段
-        String[] title = {"EPC编码","批次号","业务开始日期", "业务结束日期", "封袋日期","封箱日期","入库日期","出库日期","销毁日期", "封袋编号", "条码编号","登记机构号", "档案所属机构名称", "档案种类", "档案名称", "档案本数","区域编号","档案架号","层号","列号", "档案袋/箱编号","盘点状态"};
+        String[] title = {"EPC编码","批次号","业务开始日期", "业务结束日期", "封袋日期","封箱日期","入库日期","出库日期","销毁日期", "封袋编号", "条码编号","登记机构号", "档案所属机构名称", "档案种类", "档案名称", "档案本数","区域编号","档案架号","层号","列号", "档案袋/箱编号","备注册","盘点状态"};
         File file;
         File dir = new File(Environment.getExternalStorageDirectory() + "/新文件夹/");
         file = new File(dir, fileName);
@@ -288,7 +290,8 @@ public class ExcelUtils {
             Label shelfFloorLable = new Label(18, i + 1, order.getShelfFloorCode());
             Label shelfColumLable = new Label(19, i + 1, order.getShelfColumCode());
             Label boxLable = new Label(20, i + 1, order.getBoxCode());
-            Label statusLable = new Label(21, i + 1, order.getInvStatus().toString());
+            Label remarkLable = new Label(21, i + 1, order.getRemarkNum());
+            Label statusLable = new Label(22, i + 1, order.getInvStatus().toString());
             sheet.addCell(epcLable);
             sheet.addCell(batchLabel);
             sheet.addCell(startLabel);
@@ -310,6 +313,7 @@ public class ExcelUtils {
             sheet.addCell(shelfFloorLable);
             sheet.addCell(shelfColumLable);
             sheet.addCell(boxLable);
+            sheet.addCell(remarkLable);
             sheet.addCell(statusLable);
         }
         // 写入数据
@@ -399,6 +403,7 @@ public class ExcelUtils {
                 fileBean.setShelfFloorCode(lines[18]);
                 fileBean.setShelfColumCode(lines[19]);
                 fileBean.setBoxCode(lines[20]);
+                fileBean.setRemarkNum(lines[21]);
                 list.add(fileBean);
                 a++;
                 //i=0;
