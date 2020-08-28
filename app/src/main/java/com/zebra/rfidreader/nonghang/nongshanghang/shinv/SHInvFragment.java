@@ -540,6 +540,9 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     }
 
     public  boolean isInteger(String str) {
+        if(str == null || str.length() == 0){
+            return false;
+        }
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         return pattern.matcher(str).matches();
     }

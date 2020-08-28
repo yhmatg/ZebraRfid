@@ -532,6 +532,9 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     }
 
     public  boolean isInteger(String str) {
+        if(str == null || str.length() == 0){
+            return false;
+        }
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         return pattern.matcher(str).matches();
     }

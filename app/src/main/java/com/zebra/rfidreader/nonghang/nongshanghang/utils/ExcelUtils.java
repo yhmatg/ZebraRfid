@@ -159,8 +159,8 @@ public class ExcelUtils {
             Workbook course = null;
             course = Workbook.getWorkbook(f);
             Sheet sheet = course.getSheet(0);
-
             Cell cell = null;
+            int columns = sheet.getColumns();
             for (int i = 1; i < sheet.getRows(); i++) {
                 FileBean tc = new FileBean();
                 cell = sheet.getCell(0, i);
@@ -205,7 +205,9 @@ public class ExcelUtils {
                 tc.setShelfColumCode(cell.getContents());
                 cell = sheet.getCell(20, i);
                 tc.setBoxCode(cell.getContents());
-                cell = sheet.getCell(21, i);
+                if(columns >= 22){
+                    cell = sheet.getCell(21, i);
+                }
                 tc.setRemarkNum(cell.getContents());
                 Log.d("gaolei", "Row" + i + "---------" + tc.getEpcCode()
                         + tc.getBagCode() + tc.getBoxCode());
@@ -403,7 +405,10 @@ public class ExcelUtils {
                 fileBean.setShelfFloorCode(lines[18]);
                 fileBean.setShelfColumCode(lines[19]);
                 fileBean.setBoxCode(lines[20]);
-                fileBean.setRemarkNum(lines[21]);
+                if(lines.length >= 22){
+                    fileBean.setRemarkNum(lines[21]);
+                }
+
                 list.add(fileBean);
                 a++;
                 //i=0;

@@ -6,6 +6,7 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
+import android.arch.persistence.room.migration.Migration;
 import android.support.annotation.NonNull;
 
 import com.zebra.rfidreader.nonghang.application.Application;
@@ -14,7 +15,7 @@ import com.zebra.rfidreader.nonghang.nongshanghang.shinv.FileBean;
 @Database(entities = {
         FileBean.class
 }
-        , version = 1)
+        , version = 2)
 @TypeConverters(DateConverter.class)
 public abstract class DemoDatabase extends RoomDatabase {
     public static final String DB_NAME = "inventory.db";
@@ -43,9 +44,18 @@ public abstract class DemoDatabase extends RoomDatabase {
             public void onOpen(@NonNull SupportSQLiteDatabase db) {
                 super.onOpen(db);
             }
-        }).allowMainThreadQueries().build();
+        }).allowMainThreadQueries().addMigrations(MIGRATION_1_2).build();
         return build;
     }
+
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            //此处对于数据库中的所有更新都需要写下面的代码
+            database.execSQL("ALTER TABLE FileBean "
+                    + " ADD COLUMN remarkNum TEXT");
+        }
+    };
 
     public abstract FileBeanDao getFileBeanDao();
 }

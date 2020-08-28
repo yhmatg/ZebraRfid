@@ -114,7 +114,10 @@ public class SyncDataFragment extends Fragment {
                         @Override
                         protected void onPostExecute(Void aVoid) {
                             super.onPostExecute(aVoid);
-                            Toast.makeText(getActivity(),"数据导入成功", Toast.LENGTH_SHORT).show();
+                            if(getActivity() != null){
+                                Toast.makeText(getActivity(),"数据导入成功", Toast.LENGTH_SHORT).show();
+                            }
+
                         }
                     }.execute();
 
