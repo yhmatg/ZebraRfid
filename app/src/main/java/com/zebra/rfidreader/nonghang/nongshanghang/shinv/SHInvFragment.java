@@ -17,7 +17,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.multilevel.treelist.Node;
@@ -51,6 +53,8 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     private RecyclerView multiRecycle;
     private RecyclerView fileRecycle;
     protected List<Node> multiDatas = new ArrayList<>();
+    private HashMap<String,Node> idAndNodes  = new HashMap<>();
+
     private TreeRecyclerAdapter multiAdapter;
     //没有按照封袋划分的文件集合
     private List<FileBean> excelfileBeans = new ArrayList<>();
@@ -78,6 +82,8 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     private List<String> currentInvedEpcs = new ArrayList<>();
     private HashMap<String,Integer> boxAndRemark = new HashMap<>();
     private int allRemarkNum;
+    private EditText etStart;
+    private EditText etEnd;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -204,6 +210,9 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         multiContentView = LayoutInflater.from(getActivity()).inflate(R.layout.multiple_choice_dialog, null);
         TextView tvSubmit = (TextView) multiContentView.findViewById(R.id.tv_finish);
         TextView tvCancel = (TextView) multiContentView.findViewById(R.id.tv_cancle);
+        Button rangeBt = (Button) multiContentView.findViewById(R.id.range_bt);
+        etStart = (EditText) multiContentView.findViewById(R.id.et_start);
+        etEnd = (EditText) multiContentView.findViewById(R.id.et_end);
         multiRecycle = (RecyclerView) multiContentView.findViewById(R.id.multi_recycle);
         multiRecycle.setLayoutManager(new LinearLayoutManager(getActivity()));
         multiAdapter = new SimpleTreeRecyclerAdapter(multiRecycle, getActivity(),
@@ -281,6 +290,36 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                 if (multipleDialog != null) {
                     multipleDialog.dismiss();
                 }
+            }
+        });
+
+        rangeBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String startStr = etStart.getText().toString();
+                String endStr = etEnd.getText().toString();
+                if(startStr.isEmpty()){
+                    Toast.makeText(getActivity(),"请输入起始箱号后五位",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(endStr.isEmpty()){
+                    Toast.makeText(getActivity(),"请输入结束箱号后五位",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int startInt = Integer.parseInt(startStr);
+                int endInt = Integer.parseInt(endStr);
+                if(startInt > endInt){
+                    Toast.makeText(getActivity(),"起始箱号不能大于结束箱号",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                for (int i = startInt; i <= endInt ; i++) {
+                    String id = "NSYH0" + i;
+                    Node node = idAndNodes.get(id);
+                    if(node != null){
+                        node.setChecked(true);
+                    }
+                }
+                multiAdapter.notifyDataSetChanged();
             }
         });
 
@@ -421,7 +460,9 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
     private void divideByBoxcode(List<FileBean> fileBeans) {
         multiAdapter.removeData(multiDatas);
         multiDatas.clear();
+        idAndNodes.clear();
         multiDatas.add(new Node("100", "-1", "全部"));
+        idAndNodes.put("100",new Node("100", "-1", "全部"));
         boxAndRemark.put("全部",0);
         ArrayList<String> boxCodes = new ArrayList<>();
         for (FileBean fileBean : fileBeans) {
@@ -432,8 +473,9 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
                 }else {
                     boxAndRemark.put(fileBean.getBoxCode(),0);
                 }
-
-                multiDatas.add(new Node(fileBean.getBoxCode(), "100", fileBean.getBoxCode()));
+                Node node = new Node(fileBean.getBoxCode(), "100", fileBean.getBoxCode());
+                multiDatas.add(node);
+                idAndNodes.put(fileBean.getBoxCode(),node);
             }
         }
         multiAdapter.addData(multiDatas);
