@@ -1,5 +1,6 @@
 package com.zebra.rfidreader.nonghang.nongshanghang.shverity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,10 +20,13 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.king.zxing.CaptureActivity;
+import com.king.zxing.Intents;
 import com.zebra.rfidreader.nonghang.R;
 import com.zebra.rfidreader.nonghang.application.Application;
 import com.zebra.rfidreader.nonghang.common.ResponseHandlerInterfaces;
@@ -44,9 +48,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class SHVertifyFragment extends Fragment implements ResponseHandlerInterfaces.ResponseTagHandler, ResponseHandlerInterfaces.TriggerEventHandler, FileBeanVertifyAdapter.OnItemClickListener, EpcBeanAdapter.OnItemClickListener {
+    private static final int LITE_REQUEST_CODE = 3;
     private Button chooseBox;
     //当前按封袋编号处理过的集合
     ArrayList<FileBean> currentFileList = new ArrayList<>();
@@ -86,6 +92,7 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
     private TextView result;
     private TextView remarkNum;
     private HashMap<String,Integer> boxAndRemark = new HashMap<>();
+    private ImageView scanIcon;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -134,6 +141,13 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         exportButton =  getActivity().findViewById(R.id.bt_export);
         result =  getActivity().findViewById(R.id.tv_result);
         remarkNum = (TextView) getActivity().findViewById(R.id.remark_num);
+        scanIcon = (ImageView) getActivity().findViewById(R.id.iv_scan);
+        scanIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(getActivity(), CaptureActivity.class),LITE_REQUEST_CODE);
+            }
+        });
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -537,5 +551,16 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         }
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         return pattern.matcher(str).matches();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == LITE_REQUEST_CODE && resultCode == RESULT_OK){
+            if(data != null){
+                String result = data.getStringExtra(Intents.Scan.RESULT);
+                mSearchData.setText(result);
+            }
+        }
     }
 }

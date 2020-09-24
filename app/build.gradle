@@ -31,6 +31,10 @@ android {
         debug {
 
         }
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
     }
 }
 dependencies {
@@ -51,4 +55,5 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
     implementation 'com.github.xuexiangjys.XLog:xlog-core:1.2.1'
     implementation 'com.github.xuexiangjys.XLog:xlog-crash:1.2.1'
+    implementation 'com.king.zxing:zxing-lite:1.1.9'
 }

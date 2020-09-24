@@ -139,6 +139,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="箱号："/>
+       <ImageView
+           android:layout_marginTop="6dp"
+           android:id="@+id/iv_scan"
+           android:layout_width="32dp"
+           android:layout_height="32dp"
+           android:src="@drawable/scan_icon"/>
         <EditText
             android:id="@+id/et_searvh"
             android:layout_width="0dp"

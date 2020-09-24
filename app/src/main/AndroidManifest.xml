@@ -59,6 +59,10 @@
                 <action android:name="com.rfidreader.NFC.outofrange" />
             </intent-filter>
         </receiver>
+        <activity
+            android:name="com.king.zxing.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CaptureTheme"/>
 
     </application>
 
