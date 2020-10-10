@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -254,6 +255,8 @@ public class SHVertifyFragment extends Fragment implements ResponseHandlerInterf
         multiContentView = LayoutInflater.from(getActivity()).inflate(R.layout.multiple_choice_dialog, null);
         TextView tvSubmit = (TextView) multiContentView.findViewById(R.id.tv_finish);
         TextView tvCancel = (TextView) multiContentView.findViewById(R.id.tv_cancle);
+        LinearLayout rangeLayout = (LinearLayout) multiContentView.findViewById(R.id.range_layout);
+        rangeLayout.setVisibility(View.GONE);
         multiRecycle = (RecyclerView) multiContentView.findViewById(R.id.multi_recycle);
         multiRecycle.setLayoutManager(new LinearLayoutManager(getActivity()));
         multiAdapter = new SingleSelectAdapter(multiDatas, getActivity());
