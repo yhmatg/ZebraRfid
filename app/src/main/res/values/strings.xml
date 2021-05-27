@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">农商行盘点</string>
+    <string name="app_name">隔口验证</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="rapid_read">Rapid Read</string>
@@ -19,7 +19,7 @@
         <item>Readers List</item>
         <item>关于</item>
         <item>Profiles</item>
-        <item>档案盘点</item>
+        <item>隔口检验</item>
         <item>贴标验证</item>
         <item>数据管理</item>
         <item>册数统计</item>
@@ -525,9 +525,9 @@
     <string name="invalid_antenna_power">Invalid antenna power value</string>
     <string name="loading_csv">Importing tag list from CSV file</string>
     <string name="file_inv_str">档案盘点</string>
-    <string name="file_loc_str">档案查找</string>
+    <string name="file_loc_str">定位查找</string>
     <string name="setting_str">系统设置</string>
-    <string name="inv_app">档案盘点应用</string>
+    <string name="inv_app">隔口校验</string>
     <string name="hn_verify_str">贴标验证</string>
     <string name="application_version">版本号</string>
     <string name="sync_data">数据管理</string>

@@ -35,12 +35,13 @@
         <item
             android:id="@+id/shanghang_inv"
             android:icon="@drawable/hn_inv_icon"
-            android:title="档案盘点" />
+            android:title="隔口检验" />
 
         <item
             android:id="@+id/shanghang_vertify"
             android:icon="@drawable/hn_vertify_icon"
-            android:title="贴标认证" />
+            android:title="贴标认证"
+            android:visible="false"/>
 
         <item
             android:id="@+id/nav_locatetag"
@@ -50,7 +51,8 @@
         <item
             android:id="@+id/file_point"
             android:icon="@drawable/hn_inv_point"
-            android:title="册数统计" />
+            android:title="册数统计"
+            android:visible="false"/>
 
         <item
             android:id="@+id/shanghang_data"
@@ -65,7 +67,8 @@
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_action_about"
-            android:title="关于" />
+            android:title="关于"
+            android:visible="false"/>
     </group>
 
 </menu>

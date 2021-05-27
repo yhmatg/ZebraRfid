@@ -1,0 +1,140 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/base_layout_style"
+    android:orientation="vertical"
+    tools:context="com.zebra.rfidreader.nonghang.settings.LedFragment">
+
+    <Button
+        android:id="@+id/bt_choose_area"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="选择区域"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/file_code"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_choose_area"
+        android:layout_marginStart="30dp"
+        android:gravity="center"
+        android:hint="单号" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/file_code"
+        android:layout_alignBottom="@+id/file_code"
+        android:layout_toStartOf="@+id/cb_loc"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:text="定位查找:" />
+
+    <CheckBox
+        android:layout_marginStart="20dp"
+        android:id="@+id/cb_loc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/file_code"
+        android:layout_alignBottom="@+id/file_code"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp" />
+
+    <LinearLayout
+        android:id="@+id/num_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/file_code"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="总数："
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/all_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="异常数："
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/error_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tag_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/num_layout"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="EPC编码"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="区域"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/file_recycle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/inventoryButton"
+        android:layout_below="@+id/tag_layout"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/inventoryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:onClick="inventoryStartOrStop"
+        app:backgroundTint="#008080"
+        app:srcCompat="@android:drawable/ic_media_play" />
+
+</RelativeLayout>
+
+
+

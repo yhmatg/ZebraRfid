@@ -11,9 +11,11 @@ import android.support.annotation.NonNull;
 
 import com.zebra.rfidreader.nonghang.application.Application;
 import com.zebra.rfidreader.nonghang.nongshanghang.shinv.FileBean;
+import com.zebra.rfidreader.nonghang.zhongyou.model.AreaBean;
 
 @Database(entities = {
-        FileBean.class
+        FileBean.class,
+        AreaBean.class
 }
         , version = 2)
 @TypeConverters(DateConverter.class)
@@ -58,4 +60,6 @@ public abstract class DemoDatabase extends RoomDatabase {
     };
 
     public abstract FileBeanDao getFileBeanDao();
+
+    public abstract AreaBeanDao getAreaBeanDao();
 }

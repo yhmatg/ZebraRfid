@@ -90,6 +90,28 @@
                 android:text="@string/file_inv_str" />
 
             <Button
+                android:id="@+id/btn_locate"
+                style="@style/DashboardButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/hn_loction_icon"
+                android:drawablePadding="5dp"
+                android:layout_marginEnd="30dp"
+                android:gravity="center_horizontal|top"
+                android:onClick="locateClicked"
+                android:text="@string/file_loc_str" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:visibility="gone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <Button
                 style="@style/DashboardButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -102,25 +124,6 @@
                 android:gravity="center_horizontal|top"
                 android:onClick="vertifyClicked"
                 android:text="@string/hn_verify_str" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="30dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btn_locate"
-                style="@style/DashboardButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/hn_loction_icon"
-                android:drawablePadding="5dp"
-                android:gravity="center_horizontal|top"
-                android:onClick="locateClicked"
-                android:text="@string/file_loc_str" />
 
             <Button
                 android:id="@+id/btn_sett"

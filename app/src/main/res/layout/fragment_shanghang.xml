@@ -106,10 +106,10 @@
             android:textSize="16sp" />
 
         <TextView
-            android:layout_marginStart="20dp"
             android:id="@+id/remark_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:gravity="center"
             android:text="0"
             android:textSize="16sp" />
