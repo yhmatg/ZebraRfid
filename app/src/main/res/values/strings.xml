@@ -524,7 +524,7 @@
     <string name="action_locate">Locate</string>
     <string name="invalid_antenna_power">Invalid antenna power value</string>
     <string name="loading_csv">Importing tag list from CSV file</string>
-    <string name="file_inv_str">档案盘点</string>
+    <string name="file_inv_str">隔口校验</string>
     <string name="file_loc_str">定位查找</string>
     <string name="setting_str">系统设置</string>
     <string name="inv_app">隔口校验</string>
