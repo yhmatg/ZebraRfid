@@ -225,13 +225,19 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
             Node invNode = idAndNodes.get(postaLcode);
             if (invNode != null) {
                 String ezName = fileName.getText().toString();
-                if (locCb.isChecked() && ezName.length() > 0) {
-                    if (ezName.equals(post.getPostCode())) {
-                        Application.locateTag = post.getEpcCipher();
-                        InvBean invBean = new InvBean(invNode.getName(), post.getEpcPlant());
-                        if (!invWrongBeans.contains(invBean)) {
-                            invWrongBeans.add(invBean);
-                            areaBeanAdapter.notifyDataSetChanged();
+                if (locCb.isChecked() ) {
+                    if( ezName.length() > 0){
+                        if (ezName.equals(post.getPostCode())) {
+                            String epcCipher1 = post.getEpcCipher();
+                            if(epcCipher1.length() > 64){
+                                epcCipher1 = epcCipher1.substring(0,64);
+                            }
+                            Application.locateTag = epcCipher1;
+                            InvBean invBean = new InvBean(invNode.getName(), post.getEpcPlant());
+                            if (!invWrongBeans.contains(invBean)) {
+                                invWrongBeans.add(invBean);
+                                areaBeanAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
                 } else {
