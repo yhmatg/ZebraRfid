@@ -27,14 +27,13 @@ import com.zebra.rfidreader.nonghang.application.Application;
 import com.zebra.rfidreader.nonghang.common.ResponseHandlerInterfaces;
 import com.zebra.rfidreader.nonghang.home.MainActivity;
 import com.zebra.rfidreader.nonghang.inventory.InventoryListItem;
-import com.zebra.rfidreader.nonghang.nongshanghang.utils.ExcelUtils;
 import com.zebra.rfidreader.nonghang.nongshanghang.datebase.DemoDatabase;
+import com.zebra.rfidreader.nonghang.nongshanghang.utils.ExcelUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -287,8 +286,13 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
         String epc = hex2ascii(hexEpc);
         /*String[] split = epc.split("\\|");
         String epcHead = split[0];*/
-        if (epc.length() >= 14) {
-            String epcHead = epc.substring(0, 14);
+        if (epc.length() == 10 || epc.length() == 12 ||epc.length() == 14 || epc.length() == 16) {
+            String epcHead = "";
+            if(epc.length() >= 14){
+                epcHead = epc.substring(0, 14);
+            }else {
+                epcHead = epc.substring(0, 10);
+            }
             Log.e("epc1=====", hexEpc);
             Log.e("epc2=====", epcHead);
             FileBean fileBean = epcFileMap.get(epcHead);
@@ -462,7 +466,11 @@ public class SHInvFragment extends Fragment implements ResponseHandlerInterfaces
 
     public void copyFileBean(FileBean fromBean, FileBean toBean) {
         //toBean.setEpcCode(fromBean.getEpcCode().split("\\|")[0]);
-        toBean.setEpcCode(fromBean.getEpcCode().substring(0, 14));
+        if(fromBean.getEpcCode().length() >= 14){
+            toBean.setEpcCode(fromBean.getEpcCode().substring(0, 14));
+        }else {
+            toBean.setEpcCode(fromBean.getEpcCode().substring(0, 10));
+        }
         toBean.setBatchCode(fromBean.getBatchCode());
         toBean.setStartDate(fromBean.getStartDate());
         toBean.setEndDate(fromBean.getEndDate());
